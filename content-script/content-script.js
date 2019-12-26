@@ -35,7 +35,7 @@ function handleClick(e) {
   highlightText({ selection, highlightElement });
 }
 
-function showHighlighter({ mouseX, mouseY }) {
+function showTooltip({ mouseX, mouseY }) {
   const element = document.getElementsByClassName("dyn-tooltip");
   element[0].setAttribute(
     "style",
@@ -43,7 +43,7 @@ function showHighlighter({ mouseX, mouseY }) {
   );
 }
 
-function hideHighlighter() {
+function hideTooltip() {
   const element = document.getElementsByClassName("dyn-tooltip");
     element[0].setAttribute("style",`display:none;`);
 }
@@ -66,7 +66,7 @@ function getMousePosition(e) {
 
 document.addEventListener("mouseup", e => {
   const { mouseX, mouseY } = getMousePosition(e);
-  showHighlighter({ mouseX, mouseY});
+  showTooltip({ mouseX, mouseY});
 });
 
 function SendHighlights() {
