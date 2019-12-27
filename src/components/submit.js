@@ -45,7 +45,7 @@ function sendHighlightsToDynalist(key, fileid) {
               {
                 action: "insert",
                 parent_id: response.data.node_id,
-                index: 0,
+                index: 1,
                 content: highlights[i]
               }
             ]
