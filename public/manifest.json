@@ -1,11 +1,15 @@
 {
-  "name": "Chrome Extension Starter Kit",
+  "name": "Dynalist Highlighter",
   "version": "1.0",
   "manifest_version": 2,
+  "icons": {
+    "16": "./icon/dynalist-highlighter-logo-16.png",
+    "48": "./icon/dynalist-highlighter-logo-48.png",
+    "128": "./icon/dynalist-highlighter-logo-128.png"
+  },
   "browser_action": {
     "default_popup": "index.html"
   },
-
   "background": {
     "scripts": ["background.js"]
   },
