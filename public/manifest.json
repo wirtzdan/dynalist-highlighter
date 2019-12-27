@@ -7,21 +7,14 @@
     "48": "./icon/dynalist-highlighter-logo-48.png",
     "128": "./icon/dynalist-highlighter-logo-128.png"
   },
-  "browser_action": {
-    "default_popup": "index.html"
-  },
   "background": {
-    "scripts": ["background.js"]
+    "scripts": ["background.js"],
+    "persistent": false
   },
+  "browser_action": {},
   "options_ui": {
     "page": "options.html",
     "open_in_tab": false
   },
-  "content_scripts": [
-    {
-      "matches": ["<all_urls>"],
-      "js": ["content-script.js"]
-    }
-  ],
-  "permissions": ["storage"]
+  "permissions": ["storage", "activeTab", "http://*/", "https://*/"]
 }
