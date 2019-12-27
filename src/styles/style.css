@@ -26,7 +26,7 @@
     cursor: pointer !important;
 }
 
-.dyn-send-button {
+.dyn-submit-button {
     z-index: 9999 !important;
     position: fixed;
     bottom: 0;
