@@ -15,13 +15,6 @@ import {
 
 import "../src/styles/style.css";
 
-console.log("Dynalist Annotator Loaded");
-
-// ---- Get storage values ---- //
-
-let key = "";
-let fileid = "";
-
 // ---- Helper functions ---- //
 
 function mountComponent(component) {
@@ -31,7 +24,6 @@ function mountComponent(component) {
 // ––––– Simple state –––– //
 
 let isTooltipVisible = false;
-let isSubmitButtonVisible = false;
 
 // ––––– Mount components –––– //
 
