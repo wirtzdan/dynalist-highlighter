@@ -17,6 +17,11 @@ import "../src/styles/style.css";
 
 console.log("Dynalist Annotator Loaded");
 
+// ---- Get storage values ---- //
+
+let key = "";
+let fileid = "";
+
 // ---- Helper functions ---- //
 
 function mountComponent(component) {
@@ -38,7 +43,11 @@ Tooltip.addEventListener("mousedown", e => {
 
 const SubmitButton = createSubmitButton();
 mountComponent(SubmitButton);
-SubmitButton.addEventListener("click", sendHighlightsToDynalist);
+SubmitButton.addEventListener("click", e => {
+  chrome.storage.sync.get(["key", "fileid"], function(result) {
+    sendHighlightsToDynalist(result.key, result.fileid);
+  });
+});
 
 // –––– Add event listner –––– //
 
