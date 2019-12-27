@@ -14,7 +14,7 @@ const dynDocument = axios.create({
 });
 
 function createSubmitButton() {
-  const SubmitButton = document.createElement("button");
+  const SubmitButton = document.createElement("div");
   SubmitButton.innerHTML = `Send to Dynalist`;
   SubmitButton.classList.add("dyn-submit-button");
   return SubmitButton;
