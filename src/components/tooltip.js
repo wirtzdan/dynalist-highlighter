@@ -21,6 +21,29 @@ function createTooltip() {
   return Tooltip;
 }
 
+function createOptionTooltip() {
+  const OptionTooltip = document.createElement("div");
+  OptionTooltip.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="feather feather-trash-2" viewBox="0 0 24 24">
+  <path d="M3 6h18M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2M10 11v6M14 11v6"/>
+</svg>`;
+  OptionTooltip.classList.add("dyn-tooltip-options");
+  return OptionTooltip;
+}
+
+function showOptions(e) {
+  const { mouseX, mouseY } = getMousePosition(e);
+  const element = document.getElementsByClassName("dyn-tooltip-options");
+  element[0].setAttribute(
+    "style",
+    `display:block; top: ${mouseY - 45}px; left: ${mouseX - 15}px;`
+  );
+}
+
+function hideOptions(e) {
+  const element = document.getElementsByClassName("dyn-tooltip-options");
+  element[0].setAttribute("style", `display: none;`);
+}
+
 function showTooltip(e) {
   const { mouseX, mouseY } = getMousePosition(e);
   const element = document.getElementsByClassName("dyn-tooltip");
@@ -35,4 +58,11 @@ function hideTooltip() {
   element[0].setAttribute("style", `display: none;`);
 }
 
-export { createTooltip, showTooltip, hideTooltip };
+export {
+  createTooltip,
+  showTooltip,
+  hideTooltip,
+  createOptionTooltip,
+  showOptions,
+  hideOptions
+};

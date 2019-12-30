@@ -1,7 +1,6 @@
 function createHighlightInstance() {
   const Highlight = document.createElement("span");
   Highlight.classList.add("dyn-highlight");
-  Highlight.addEventListener("click", () => alert("Clicked"));
   return Highlight;
 }
 

@@ -6,7 +6,10 @@ import {
 import {
   createTooltip,
   showTooltip,
-  hideTooltip
+  hideTooltip,
+  showOptions,
+  hideOptions,
+  createOptionTooltip
 } from "../src/components/tooltip";
 import {
   createHighlightInstance,
@@ -33,6 +36,9 @@ Tooltip.addEventListener("mousedown", e => {
   handleClick(e);
 });
 
+const Options = createOptionTooltip();
+mountComponent(Options);
+
 const SubmitButton = createSubmitButton();
 mountComponent(SubmitButton);
 SubmitButton.addEventListener("click", e => {
@@ -55,6 +61,18 @@ document.addEventListener("mouseup", e => {
 });
 
 document.addEventListener("mousedown", e => {
+  if (e.target.className == "dyn-highlight") {
+    const highlight = e.target;
+    const options = document.getElementsByClassName("dyn-tooltip-options")[0];
+
+    options.addEventListener("click", e => {
+      // remove highlight
+      hideOptions();
+    });
+
+    showOptions(e);
+  }
+
   if (isTooltipVisible) {
     hideTooltip();
     isTooltipVisible = false;
