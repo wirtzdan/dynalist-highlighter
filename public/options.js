@@ -14,7 +14,7 @@ function save_options() {
       status.textContent = "Options saved.";
       setTimeout(function() {
         status.textContent = "";
-      }, 750);
+      }, 1500);
     }
   );
 }
