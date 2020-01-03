@@ -123,7 +123,8 @@ function sendHighlightsToDynalist(key, fileid) {
       content: `[${title}](${url})`
     })
     .then(function(response) {
-      for (let i in highlights) {
+      // TODO: Change this work with async/await
+      for (let index = 0; index < highlights.length; index++) {
         dynDocument
           .post("/edit", {
             token: key,
@@ -133,7 +134,7 @@ function sendHighlightsToDynalist(key, fileid) {
                 action: "insert",
                 parent_id: response.data.node_id,
                 index: 1,
-                content: highlights[i]
+                content: highlights[index]
               }
             ]
           })
@@ -143,6 +144,9 @@ function sendHighlightsToDynalist(key, fileid) {
           .catch(function(error) {
             console.log(error);
           });
+        setTimeout(() => {
+          console.log(highlights[i]);
+        }, 400);
       }
     })
     .catch(function(error) {
@@ -227,6 +231,8 @@ function removeElements(classNames) {
   }
 }
 
+let active = false;
+
 chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
   if (request.msg === "deactivate") {
     sendResponse("Deactivated");
@@ -235,11 +241,14 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
     removeElements(["dyn-adder", "dyn-submit-button", "dyn-tooltip"]);
   }
 
-  if (request.msg === "activate") {
+  if (request.msg === "activate" && active === false) {
     sendResponse("Activated");
     document.body.appendChild(Adder);
     document.body.appendChild(SubmitButton);
     document.body.appendChild(Tooltip);
     addAllEventListener();
+    active = true;
+  } else {
+    sendResponse("Nothing happend.");
   }
 });

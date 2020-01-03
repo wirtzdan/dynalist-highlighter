@@ -8,12 +8,14 @@
     "128": "./icon/icon-on-128.png"
   },
   "background": {
-    "scripts": ["background.js"]
+    "scripts": ["background.js"],
+    "persistent": false
   },
+
   "browser_action": {},
   "options_ui": {
     "page": "options.html",
     "open_in_tab": false
   },
-  "permissions": ["storage", "activeTab", "http://*/", "https://*/"]
+  "permissions": ["storage", "activeTab", "<all_urls>"]
 }
