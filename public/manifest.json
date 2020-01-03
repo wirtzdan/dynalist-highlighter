@@ -3,13 +3,12 @@
   "version": "1.0",
   "manifest_version": 2,
   "icons": {
-    "16": "./icon/dynalist-highlighter-logo-16.png",
-    "48": "./icon/dynalist-highlighter-logo-48.png",
-    "128": "./icon/dynalist-highlighter-logo-128.png"
+    "16": "./icon/icon-on-16.png",
+    "48": "./icon/icon-on-48.png",
+    "128": "./icon/icon-on-128.png"
   },
   "background": {
-    "scripts": ["background.js"],
-    "persistent": false
+    "scripts": ["background.js"]
   },
   "browser_action": {},
   "options_ui": {
