@@ -82,6 +82,7 @@ function addHighlight(e) {
   highlighter.getHighlightForElement(e.target);
   const selectionTxt = rangy.getSelection();
   rangy.getSelection().removeAllRanges();
+  const hl = highlighter;
 }
 
 function removeHighlight(target) {
@@ -107,55 +108,31 @@ function hideElement(el) {
   el.style.display = "none";
 }
 
-function sendHighlightsToDynalist(key, fileid) {
-  const htmlHighlights = document.getElementsByClassName("dyn-highlight");
+async function sendHighlightsToDynalist(key, fileid) {
+  const response = await dynInbox.post("/add", {
+    token: key,
+    index: "0",
+    content: `[${title}](${url})`
+  });
 
-  const highlights = [];
-
-  for (let highlight of htmlHighlights) {
-    highlights.push(highlight.innerText);
-  }
-
-  dynInbox
-    .post("/add", {
+  // TODO: Implement Dropdown in the options where you choose a file
+  for (const highlight of highlighter.highlights) {
+    await dynDocument.post("/edit", {
       token: key,
-      index: "0",
-      content: `[${title}](${url})`
-    })
-    .then(function(response) {
-      // TODO: Change this work with async/await
-      for (let index = 0; index < highlights.length; index++) {
-        dynDocument
-          .post("/edit", {
-            token: key,
-            file_id: fileid,
-            changes: [
-              {
-                action: "insert",
-                parent_id: response.data.node_id,
-                index: 1,
-                content: highlights[index]
-              }
-            ]
-          })
-          .then(function(response) {
-            console.log("DocumentChange", response);
-          })
-          .catch(function(error) {
-            console.log(error);
-          });
-        setTimeout(() => {
-          console.log(highlights[i]);
-        }, 400);
-      }
-    })
-    .catch(function(error) {
-      console.log(error);
+      file_id: fileid,
+      changes: [
+        {
+          action: "insert",
+          parent_id: response.data.node_id,
+          index: 1,
+          content: highlight.getText()
+        }
+      ]
     });
+  }
 }
 
 // ---- Handle Functions ---- //
-
 function handleMouseup(e) {
   rangy.getSelection().expand("word", {
     trim: true
