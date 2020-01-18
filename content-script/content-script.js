@@ -137,14 +137,14 @@ async function sendHighlightsToDynalist(key, fileid) {
 
 // ---- Handle Functions ---- //
 function handleMouseup(e) {
-  rangy.getSelection().expand("word", {
-    trim: true
-  });
   const selection = document.getSelection();
 
   if (Adder.style.display === "block" || selection.isCollapsed) {
     hideElement(Adder);
   } else {
+    rangy.getSelection().expand("word", {
+      trim: true
+    });
     showElement(Adder, e);
   }
 }
@@ -221,6 +221,9 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
     removeAllEventListener();
     removeElements(["dyn-adder", "dyn-submit-button", "dyn-tooltip"]);
   } else if (request.msg === "activate" && active === false) {
+    if (document.getElementsByClassName("dyn-adder").length > 0) {
+      return;
+    }
     sendResponse("Response: Activated");
     document.body.appendChild(Adder);
     document.body.appendChild(SubmitButton);

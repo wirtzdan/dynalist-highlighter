@@ -1,5 +1,21 @@
 console.log("Background Script Loaded!");
 
+chrome.contextMenus.create({
+  id: "launcher",
+  title: "Hotkey",
+  contexts: ["launcher"]
+});
+
+chrome.contextMenus.onClicked.addListener(({ menuItemId }, tab) => {
+  if (menuItemId === "launcher") openHotkeyPage();
+});
+
+function openHotkeyPage() {
+  console.log("Fired!");
+  var newURL = "chrome://extensions/shortcuts";
+  chrome.tabs.create({ url: newURL });
+}
+
 function activateExtension() {
   chrome.tabs.query({ active: true, currentWindow: true }, function(
     tabs,

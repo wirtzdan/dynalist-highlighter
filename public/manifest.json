@@ -17,5 +17,5 @@
     "page": "options.html",
     "open_in_tab": false
   },
-  "permissions": ["storage", "activeTab", "<all_urls>"]
+  "permissions": ["storage", "activeTab", "<all_urls>", "contextMenus"]
 }
