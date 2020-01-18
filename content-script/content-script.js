@@ -7,6 +7,7 @@ import "rangy/lib/rangy-highlighter";
 import "rangy/lib/rangy-textrange";
 import "rangy/lib/rangy-serializer";
 import "../src/styles/style.css";
+import TurndownService from "turndown";
 
 const axios = require("axios").default;
 
@@ -20,12 +21,12 @@ highlighter.addClassApplier(rangy.createClassApplier("dyn-highlight"));
 
 const dynInbox = axios.create({
   baseURL: "https://dynalist.io/api/v1/inbox",
-  timeout: 1000
+  timeout: 10000
 });
 
 const dynDocument = axios.create({
   baseURL: "https://dynalist.io/api/v1/doc",
-  timeout: 1000
+  timeout: 10000
 });
 
 const title = document.title;
@@ -109,6 +110,8 @@ function hideElement(el) {
 }
 
 async function sendHighlightsToDynalist(key, fileid) {
+  const turndown = new TurndownService();
+
   const response = await dynInbox.post("/add", {
     token: key,
     index: "0",
@@ -124,8 +127,8 @@ async function sendHighlightsToDynalist(key, fileid) {
         {
           action: "insert",
           parent_id: response.data.node_id,
-          index: 1,
-          content: highlight.getText()
+          index: -1,
+          content: turndown.turndown(highlight.getRange().toHtml())
         }
       ]
     });
@@ -211,21 +214,20 @@ function removeElements(classNames) {
 let active = false;
 
 chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
+  console.log("TCL: request", request);
   if (request.msg === "deactivate") {
-    sendResponse("Deactivated");
+    sendResponse("Response: Deactivated");
     highlighter.removeAllHighlights();
     removeAllEventListener();
     removeElements(["dyn-adder", "dyn-submit-button", "dyn-tooltip"]);
-  }
-
-  if (request.msg === "activate" && active === false) {
-    sendResponse("Activated");
+  } else if (request.msg === "activate" && active === false) {
+    sendResponse("Response: Activated");
     document.body.appendChild(Adder);
     document.body.appendChild(SubmitButton);
     document.body.appendChild(Tooltip);
     addAllEventListener();
     active = true;
   } else {
-    sendResponse("Nothing happend.");
+    sendResponse("Response: Nothing happend.");
   }
 });
