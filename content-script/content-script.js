@@ -19,14 +19,9 @@ rangy.init();
 const highlighter = rangy.createHighlighter(); // Adds a highlighter object that stores all highlights
 highlighter.addClassApplier(rangy.createClassApplier("dyn-highlight"));
 
-const dynInbox = axios.create({
-  baseURL: "https://dynalist.io/api/v1/inbox",
-  timeout: 10000
-});
-
 const dynDocument = axios.create({
   baseURL: "https://dynalist.io/api/v1/doc",
-  timeout: 10000
+  timeout: 1000
 });
 
 const url = document.URL;
@@ -34,9 +29,17 @@ const url = document.URL;
 const Adder = createAdder();
 const Tooltip = createTooltip();
 const Widget = createWidget();
+const FeedbackLink = createFeedbackLink();
 
 // ---- Create all elements ---- //
 // TODO: Try to import the SVGs from the Filesystem
+function createFeedbackLink() {
+  const FeedbackLink = document.createElement("div");
+  FeedbackLink.innerHTML = `<a href="mailto:danielwirtzx@gmail.com" target="_blank">Give Feedback</a>`;
+  FeedbackLink.classList.add("dyn-feedback-link");
+  return FeedbackLink;
+}
+
 function createAdder() {
   const Adder = document.createElement("div");
   Adder.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg"viewBox="0 0 13.37 16.51"><path d="M12.87 16.51a.5.5 0 01-.5-.5v-2.26L9.84 11.2a1 1 0 01-.3-.73V8.79L4 8.76v1.57a1 1 0 01-.3.73L1 13.73V16a.5.5 0 01-.5.5.5.5 0 01-.5-.5v-2.25A1 1 0 01.3 13L3 10.35V8.79a1 1 0 011-1h5.5a1 1 0 011 1v1.68L13.07 13a1 1 0 01.3.73V16a.5.5 0 01-.5.51z"fill="#4e4d4d"/><path d="M10 6H3.48V3a.46.46 0 01.28-.43L9.2.05a.6.6 0 01.8.54z"fill="#FFD43B"/></svg>`;
@@ -181,10 +184,18 @@ async function sendHighlightsToDynalist(key, fileid) {
 
   const turndown = new TurndownService();
 
-  const response = await dynInbox.post("/add", {
+  const response = await dynDocument.post("/edit", {
     token: key,
     index: "0",
-    content: `[${title}](${url})`
+    file_id: fileid,
+    changes: [
+      {
+        action: "insert",
+        parent_id: "root",
+        index: 0,
+        content: `[${title}](${url})`
+      }
+    ]
   });
   console.log("TCL: sendHighlightsToDynalist -> response", response);
 
@@ -195,7 +206,7 @@ async function sendHighlightsToDynalist(key, fileid) {
       changes: [
         {
           action: "insert",
-          parent_id: response.data.node_id,
+          parent_id: response.data.new_node_ids[0],
           index: -1,
           content: turndown.turndown(highlight.getRange().toHtml())
         }
@@ -205,7 +216,7 @@ async function sendHighlightsToDynalist(key, fileid) {
 
   document.getElementsByClassName(
     "dyn-widget"
-  )[0].innerHTML = `<div class="dyn-widget-container"><p>Bookmark added to Dynalist:</p><a href="${"#"}">${title}</a></div>`;
+  )[0].innerHTML = `<div class="dyn-widget-container"><a class="dyn-link" href="https://dynalist.io/d/${fileid}#z=${response.data.new_node_ids[0]}" target="_blank">Open in Dynalist</a></div>`;
 }
 
 // ---- Handle Functions ---- //
@@ -242,13 +253,13 @@ function handleClick() {
   console.log("Clicked!");
 
   chrome.storage.sync.get(["key", "fileid"], function(result) {
+    console.log("TCL: handleClick -> result", result);
     const { key, fileid } = result;
 
     if (!key || !fileid) {
       alert(
         "You need to add your API key to make the connection to Dynalist. Head to the options (Right click on the extension icon) to add the key."
       );
-      sendHighlightsToDynalist(key, fileid);
     } else {
       sendHighlightsToDynalist(key, fileid);
     }
@@ -304,11 +315,11 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
     if (document.getElementsByClassName("dyn-adder").length > 0) {
       return;
     }
-
     sendResponse("Response: Activated");
     document.body.appendChild(Widget);
     document.body.appendChild(Adder);
     document.body.appendChild(Tooltip);
+    document.body.appendChild(FeedbackLink);
     addAllEventListener();
     active = true;
   } else {

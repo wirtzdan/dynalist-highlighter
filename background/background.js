@@ -1,5 +1,11 @@
 console.log("Background Script Loaded!");
 
+chrome.runtime.onInstalled.addListener(function(object) {
+  chrome.tabs.create({
+    url: "https://dynalist-highlighter.danielwirtz.com/install/"
+  });
+});
+
 chrome.contextMenus.create({
   id: "launcher",
   title: "Hotkey",
@@ -30,6 +36,7 @@ function activateExtension() {
 }
 
 chrome.browserAction.onClicked.addListener(function() {
+  chrome.tabs.insertCSS({ file: "./static/css/content-script.css" });
   chrome.tabs.executeScript(
     null,
     { file: "content-script.js" },

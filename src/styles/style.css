@@ -9,10 +9,23 @@
     0 4px 6px -2px rgba(0, 0, 0, 0.05);
 }
 
+.dyn-feedback-link {
+  z-index: 9999 !important;
+  position: fixed;
+  bottom: 120px;
+  right: 26px;
+}
+
+
+.dyn-feedback-link a {
+  font-size: 10px;
+  text-decoration: underline;
+  color: gray;
+}
+
 .dyn-adder {
   display: none;
-  width: 32px !important;
-  height: 32px !important;
+  width: 32px !important;height: 32px !important;
   z-index: 9999 !important;
   box-sizing: border-box !important;
   position: absolute !important;
@@ -168,13 +181,20 @@
 .dyn-widget-container p {
   color: #495057;
   font-size: 16px;
-  font-weight: 600;
-  margin: 4px;
 }
 
-.dyn-widget-container a {
+.dyn-widget-container .dyn-link {
   color: #212529;
   font-size: 16px;
+  font-weight: 600;
+  margin: 4px;
+  background-color: #EAECEF;
+  padding: 8px 12px;
+  border-radius: 4px;
+}
+
+.dyn-widget.container hover:dyn-link {
+  background-color: #dee2e6;
 }
 
 .dyn-widget-container svg {
