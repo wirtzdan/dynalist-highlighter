@@ -65,30 +65,6 @@
   cursor: pointer !important;
 }
 
-.dyn-submit-button {
-  z-index: 9999 !important;
-  position: fixed;
-  bottom: 0;
-  right: 0;
-  margin: 20px;
-  color: #fff;
-  font-size: 20px;
-  background-color: var(--dyn-primary);
-  padding: 8px 16px;
-  border-radius: 4px;
-  box-shadow: var(--dyn-shadow-lg);
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica,
-    Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
-  transition: background-color 0.15s ease-in-out;
-  cursor: pointer;
-  line-height: 1.5;
-  font-weight: 500;
-}
-
-.dyn-submit-button:hover {
-  background-color: var(--dyn-primary-darker);
-}
-
 .dyn-highlight {
   position: relative !important;
   font-family: inherit !important;
@@ -101,4 +77,107 @@
 
 .dyn-highlight:hover {
   background-color: var(--dyn-highlight-hover);
+}
+
+.dyn-widget {
+  z-index: 9999 !important;
+  position: fixed;
+  bottom: 0;
+  right: 0;
+  background-color: white;
+  margin: 20px;
+  padding: 12px;
+  width: 300px;
+  height: 100px;
+  border-radius: 4px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  box-shadow: var(--dyn-shadow-lg);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica,
+    Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+  border: 1px solid #EAECEF;
+}
+
+.dyn-widget-bar {
+  display: flex;
+  align-items: center;
+}
+
+.dyn-button {
+  color: #fff;
+  font-size: 16px;
+  background-color: var(--dyn-primary);
+  margin-right: 16px;
+  cursor: pointer !important;
+  padding: 8px 12px;
+  border-radius: 4px;
+  border: none;
+  outline: none;
+}
+
+.dyn-highlight-counter {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 16px;
+  font-weight: medium;
+  color: #868e96;
+  margin: 0;
+  display: none;
+}
+
+.dyn-highlight-counter span {
+  margin-right: 4px;
+  background-color: #EAECEF;
+
+  width: 24px;
+  height: 24px;
+  font-size: 16px;
+  border-radius: 100px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+.dyn-title {
+  font-size: 16px;
+  width: 100%;
+  text-decoration: underline;
+  font-weight: bold;
+  border-radius: 4px;
+  border: none;
+  overflow: auto;
+  outline: none;
+  resize: none;
+  -webkit-box-shadow: none;
+  -moz-box-shadow: none;
+  box-shadow: none;
+  height: 100%;
+}
+
+.dyn-widget-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+}
+
+.dyn-widget-container p {
+  color: #495057;
+  font-size: 16px;
+  font-weight: 600;
+  margin: 4px;
+}
+
+.dyn-widget-container a {
+  color: #212529;
+  font-size: 16px;
+}
+
+.dyn-widget-container svg {
+  width: 48px;
+  height: 48px;
 }
