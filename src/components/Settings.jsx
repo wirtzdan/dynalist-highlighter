@@ -1,5 +1,6 @@
+/*global chrome*/
 import React, { useState } from "react";
-import isKeyValid from "../util/api";
+import { isKeyValid, getFiles } from "../util/api";
 
 import {
   Modal,
@@ -43,8 +44,16 @@ function Settings({ isOpen, onClose }) {
       setIsLoading(false);
 
       if (response) {
-        setAreDetailsVisible(true);
-        setIsAlertVisible(false);
+        chrome.storage.sync.set(
+          {
+            key: key
+          },
+          function() {
+            console.log("Success");
+          }
+        );
+
+        loadDetails();
       } else {
         setIsAlertVisible(true);
       }
@@ -53,6 +62,51 @@ function Settings({ isOpen, onClose }) {
       setAreDetailsVisible(false);
     }
   }
+
+  function loadDetails() {
+    chrome.storage.sync.get(["key", "files", "fileid"], async function(result) {
+      console.log("TCL: functionrestore_options -> Google Storage:", result);
+      const { key } = result;
+
+      if (key) {
+        const files = await getFiles(key);
+        console.log("TCL: loadDetails -> files", files);
+        updateSelect(files);
+        const fileid = "hc5cMje-Z4IErKf6xOO_hGz3";
+        selectOption(fileid);
+
+        setAreDetailsVisible(true);
+        setIsAlertVisible(false);
+      }
+    });
+  }
+
+  function updateSelect(files) {
+    console.log("TCL: updateSelect -> files", files);
+
+    let options = "";
+    const select = document.getElementById("dyn-files-select");
+
+    for (const file of files) {
+      const option = `<option value="${file.id}">${file.title}</option>`;
+      options = options + option;
+    }
+
+    select.innerHTML = options;
+  }
+
+  function selectOption(fileid) {
+    var select = document.getElementById("dyn-files-select");
+    select.value = fileid;
+  }
+
+  /* async function getFiles(key) {
+    chrome.storage.sync.set({
+      files: body.files
+    });
+
+    updateSelect(body.files);
+  } */
 
   return (
     <>
@@ -144,7 +198,11 @@ function Settings({ isOpen, onClose }) {
                   <Text color="gray.500" fontSize="sm">
                     Highlights are send to one of your choosen files.
                   </Text>
-                  <Select placeholder="Select a file" mt={2}>
+                  <Select
+                    id="dyn-files-select"
+                    placeholder="Select a file"
+                    mt={2}
+                  >
                     <option value="option1">File 1</option>
                     <option value="option2">File 2</option>
                     <option value="option3">File 3</option>

@@ -1,3 +1,4 @@
+/*global chrome*/
 import React, { useState } from "react";
 
 import Settings from "./Settings";

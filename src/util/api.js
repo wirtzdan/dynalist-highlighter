@@ -15,7 +15,7 @@ const dynDocument = axios.create({
   timeout: 1000
 });
 
-async function isKeyValid(key) {
+export async function isKeyValid(key) {
   const response = await dynFiles.post("", {
     token: key
   });
@@ -27,7 +27,13 @@ async function isKeyValid(key) {
   }
 }
 
-export default isKeyValid;
+export async function getFiles(key) {
+  const response = await dynFiles.post("", {
+    token: key
+  });
+
+  return response.data.files;
+}
 
 // async function
 
