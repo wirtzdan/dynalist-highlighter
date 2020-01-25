@@ -13,10 +13,24 @@ import {
 
 function Widget() {
   const [buttonText, setButtonText] = useState("Save Bookmark");
-  const [pageTitle, setPageTitle] = useState("");
+  const [title, setTitle] = useState(document.title);
 
   const { isOpen, onOpen, onClose } = useDisclosure();
-  console.log(onOpen);
+
+  let handleTitleChange = e => {
+    let value = e.target.value;
+    setTitle(value);
+  };
+
+  function handleResize(e) {
+    const textarea = e.target;
+    textarea.style.height = "";
+    textarea.style.height = textarea.scrollHeight + "px";
+    console.log(
+      "TCL: handleResize -> textarea.scrollHeight",
+      textarea.scrollHeight
+    );
+  }
 
   return (
     <>
@@ -33,6 +47,8 @@ function Widget() {
       >
         <Textarea
           placeholder="Title"
+          value={title}
+          onChange={handleTitleChange}
           resize="none"
           variant="unstyled"
           height="auto"
@@ -58,16 +74,6 @@ function Widget() {
         </Flex>
       </Box>
     </>
-  );
-}
-
-function handleResize(e) {
-  const textarea = e.target;
-  textarea.style.height = "";
-  textarea.style.height = textarea.scrollHeight + "px";
-  console.log(
-    "TCL: handleResize -> textarea.scrollHeight",
-    textarea.scrollHeight
   );
 }
 
