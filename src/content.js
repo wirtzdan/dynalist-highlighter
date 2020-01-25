@@ -11,29 +11,10 @@ import theme from "./theme";
 class Main extends React.Component {
   render() {
     return (
-      <Frame
-        head={[
-          <link
-            type="text/css"
-            rel="stylesheet"
-            href={chrome.runtime.getURL("/static/css/content.css")}
-          ></link>
-        ]}
-      >
-        <FrameContextConsumer>
-          {// Callback is invoked with iframe's window and document instances
-          ({ document, window }) => {
-            // Render Children
-            return (
-              <ThemeProvider theme={theme}>
-                <div className={"my-extension"}>
-                  <h1>Hello world - My first Extension</h1>
-                </div>
-              </ThemeProvider>
-            );
-          }}
-        </FrameContextConsumer>
-      </Frame>
+      <ThemeProvider theme={theme}>
+        <CSSReset />
+        <Widget />
+      </ThemeProvider>
     );
   }
 }
