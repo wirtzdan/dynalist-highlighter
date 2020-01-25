@@ -1,5 +1,6 @@
 /*global chrome*/
 import React, { useState, useEffect } from "react";
+import { sendToDynalist } from "../util/api";
 
 import Settings from "./Settings";
 
@@ -15,6 +16,7 @@ import {
 function Widget() {
   const [buttonText, setButtonText] = useState("Save Bookmark");
   const [title, setTitle] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     setTitle(document.title);
@@ -32,6 +34,12 @@ function Widget() {
     const textarea = e.target;
     textarea.style.height = "";
     textarea.style.height = textarea.scrollHeight + "px";
+  }
+
+  async function handleClick() {
+    setIsLoading(true);
+    const response = await sendToDynalist();
+    setIsLoading(false);
   }
 
   return (
@@ -61,9 +69,16 @@ function Widget() {
           pt={0}
           fontWeight="600"
           textDecoration="underline"
+          id="dyn-title"
         />
         <Flex justify="space-between">
-          <Button variantColor="blue" size="sm" loadingText="Saving">
+          <Button
+            variantColor="blue"
+            size="sm"
+            loadingText="Saving"
+            isLoading={isLoading}
+            onClick={handleClick}
+          >
             {buttonText}
           </Button>
           <Flex>

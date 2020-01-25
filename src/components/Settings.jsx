@@ -34,6 +34,18 @@ function Settings({ isOpen, onClose }) {
   const initialRef = React.useRef();
   const finalRef = React.useRef();
 
+  useEffect(() => {
+    if (isOpen) {
+      chrome.storage.sync.get(["key"], function(result) {
+        const { key } = result;
+
+        if (key) {
+          restoreOptions();
+        }
+      });
+    }
+  }, [isOpen]);
+
   async function handleClick() {
     const buttonText = document.getElementById("dyn-api-key-button").innerHTML;
     const key = document.getElementById("dyn-api-key").value;
@@ -143,18 +155,6 @@ function Settings({ isOpen, onClose }) {
     }
   }
 
-  useEffect(() => {
-    if (isOpen) {
-      chrome.storage.sync.get(["key"], function(result) {
-        const { key } = result;
-
-        if (key) {
-          restoreOptions();
-        }
-      });
-    }
-  }, [isOpen]);
-
   return (
     <>
       <SlideIn in={isOpen}>
@@ -169,7 +169,7 @@ function Settings({ isOpen, onClose }) {
             <ModalOverlay opacity={styles.opacity} />
             <ModalContent rounded="lg" {...styles}>
               <ModalHeader>Settings</ModalHeader>
-              <ModalCloseButton />
+              <ModalCloseButton top="16px" right="24px" />
               <ModalBody pb={6}>
                 <FormControl>
                   <FormLabel fontWeight="bold">
@@ -264,8 +264,8 @@ function Settings({ isOpen, onClose }) {
                     mt={2}
                     onChange={e => handleSelect(e)}
                   >
-                    <option value="-1">Start</option>
-                    <option value="0">End</option>
+                    <option value="0">Start</option>
+                    <option value="-1">End</option>
                   </Select>
                 </FormControl>
               </ModalBody>

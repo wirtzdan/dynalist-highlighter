@@ -1,3 +1,5 @@
+/*global chrome*/
+import TurndownService from "turndown";
 const axios = require("axios").default;
 
 const dynInbox = axios.create({
@@ -35,6 +37,34 @@ export async function getFiles(key) {
   return response.data.files;
 }
 
+export async function sendToDynalist() {
+  const title = document.getElementById("dyn-title").value.trim();
+  console.log("TCL: sendToDynalist -> title", title);
+  const url = document.URL;
+
+  const turndown = new TurndownService();
+
+  chrome.storage.sync.get(["key", "fileid", "toposition"], async function(
+    result
+  ) {
+    const { key, fileid, toposition } = result;
+    const response = await dynDocument.post("/edit", {
+      token: key,
+      file_id: fileid,
+      changes: [
+        {
+          action: "insert",
+          parent_id: "root",
+          index: toposition,
+          content: `[${title}](${url})`
+        }
+      ]
+    });
+
+    console.log("TCL: sendHighlightsToDynalist -> response", response);
+    return response;
+  });
+}
 // async function
 
 // async function sendHighlightsToDynalist(key, fileid) {
