@@ -21,7 +21,8 @@ import {
   Text,
   SlideIn,
   Alert,
-  AlertIcon
+  AlertIcon,
+  Flex
 } from "@chakra-ui/core";
 
 function Settings({ isOpen, onClose }) {
@@ -32,18 +33,24 @@ function Settings({ isOpen, onClose }) {
   const initialRef = React.useRef();
   const finalRef = React.useRef();
 
-  async function handleKeySave() {
-    const value = document.getElementById("dyn-api-key").value;
+  async function handleClick() {
+    const buttonText = document.getElementById("dyn-api-key-button").innerHTML;
+    const key = document.getElementById("dyn-api-key").value;
 
-    setIsLoading(true);
-    const response = await isKeyValid(value);
-    setIsLoading(false);
+    if (buttonText === "Save") {
+      setIsLoading(true);
+      const response = await isKeyValid(key);
+      setIsLoading(false);
 
-    if (response) {
-      setAreDetailsVisible(true);
-      setIsAlertVisible(false);
-    } else {
-      setIsAlertVisible(true);
+      if (response) {
+        setAreDetailsVisible(true);
+        setIsAlertVisible(false);
+      } else {
+        setIsAlertVisible(true);
+      }
+    } else if (buttonText === "Reset") {
+      document.getElementById("dyn-api-key").value = "";
+      setAreDetailsVisible(false);
     }
   }
 
@@ -64,7 +71,18 @@ function Settings({ isOpen, onClose }) {
               <ModalCloseButton />
               <ModalBody pb={6}>
                 <FormControl>
-                  <FormLabel fontWeight="bold">API Key</FormLabel>
+                  <FormLabel fontWeight="bold">
+                    <Flex align="center">
+                      <Icon
+                        mr={2}
+                        name="check-circle"
+                        size="18px"
+                        color="green.500"
+                        d={areDetailsVisible ? "block" : "none"}
+                      />
+                      <Text>API Key</Text>
+                    </Flex>
+                  </FormLabel>
                   <Text color="gray.500" fontSize="sm">
                     {" "}
                     You can find your API key on the{" "}
@@ -96,10 +114,11 @@ function Settings({ isOpen, onClose }) {
                     />
                     <InputRightElement width="4.5rem">
                       <Button
+                        id="dyn-api-key-button"
                         h="1.75rem"
                         variantColor={areDetailsVisible ? "gray" : "blue"}
                         size="sm"
-                        onClick={handleKeySave}
+                        onClick={handleClick}
                         loadingText="Testing"
                         isLoading={isLoading}
                       >
@@ -116,8 +135,7 @@ function Settings({ isOpen, onClose }) {
                     d={isAlertVisible ? "block" : "none"}
                   >
                     <AlertIcon />
-                    We could'nt connect to Dynalist. Check the key and try
-                    again.
+                    There was an error. Verify your API Key.
                   </Alert>
                 </FormControl>
 
