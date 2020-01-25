@@ -2,17 +2,17 @@ const axios = require("axios").default;
 
 const dynInbox = axios.create({
   baseURL: "https://dynalist.io/api/v1/inbox/add",
-  timeout: 1000
+  timeout: 2000
 });
 
 const dynFiles = axios.create({
   baseURL: "https://dynalist.io/api/v1/file/list",
-  timeout: 1000
+  timeout: 2000
 });
 
 const dynDocument = axios.create({
   baseURL: "https://dynalist.io/api/v1/doc",
-  timeout: 1000
+  timeout: 2000
 });
 
 export async function isKeyValid(key) {

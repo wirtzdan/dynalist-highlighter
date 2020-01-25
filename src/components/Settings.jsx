@@ -1,5 +1,5 @@
 /*global chrome*/
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { isKeyValid, getFiles } from "../util/api";
 
 import {
@@ -44,14 +44,9 @@ function Settings({ isOpen, onClose }) {
       setIsLoading(false);
 
       if (response) {
-        chrome.storage.sync.set(
-          {
-            key: key
-          },
-          function() {
-            console.log("Success");
-          }
-        );
+        chrome.storage.sync.set({
+          key: key
+        });
 
         loadDetails();
       } else {
@@ -63,29 +58,57 @@ function Settings({ isOpen, onClose }) {
     }
   }
 
+  function handleSelect(e) {
+    const el = e.target;
+
+    if (el.id === "dyn-inbox-select") {
+      chrome.storage.sync.set({
+        fileid: el.value
+      });
+    } else if (el.id === "dyn-toposition-select") {
+      chrome.storage.sync.set({
+        toposition: el.value
+      });
+    }
+  }
+
   function loadDetails() {
-    chrome.storage.sync.get(["key", "files", "fileid"], async function(result) {
-      console.log("TCL: functionrestore_options -> Google Storage:", result);
+    chrome.storage.sync.get(["key"], async function(result) {
       const { key } = result;
+      console.log("TCL: loadDetails -> result", result);
 
       if (key) {
         const files = await getFiles(key);
-        console.log("TCL: loadDetails -> files", files);
+        document.getElementById("dyn-api-key").value = key;
         updateSelect(files);
-        const fileid = "hc5cMje-Z4IErKf6xOO_hGz3";
-        selectOption(fileid);
-
+        selectOption("dyn-inbox-select");
+        selectOption("dyn-toposition-select");
         setAreDetailsVisible(true);
         setIsAlertVisible(false);
       }
     });
   }
 
-  function updateSelect(files) {
-    console.log("TCL: updateSelect -> files", files);
+  function restoreOptions() {
+    chrome.storage.sync.get(["key", "fileid", "toposition"], async function(
+      result
+    ) {
+      const { key, fileid, toposition } = result;
+      console.log("TCL: restoreOptions -> result", result);
 
+      const files = await getFiles(key);
+      document.getElementById("dyn-api-key").value = key;
+      updateSelect(files);
+      selectOption("dyn-inbox-select", fileid);
+      selectOption("dyn-toposition-select", toposition);
+      setAreDetailsVisible(true);
+      setIsAlertVisible(false);
+    });
+  }
+
+  function updateSelect(files) {
     let options = "";
-    const select = document.getElementById("dyn-files-select");
+    const select = document.getElementById("dyn-inbox-select");
 
     for (const file of files) {
       const option = `<option value="${file.id}">${file.title}</option>`;
@@ -95,18 +118,42 @@ function Settings({ isOpen, onClose }) {
     select.innerHTML = options;
   }
 
-  function selectOption(fileid) {
-    var select = document.getElementById("dyn-files-select");
-    select.value = fileid;
+  function selectOption(selectid, value) {
+    if (value) {
+      var select = document.getElementById(selectid);
+      const key = `"${value}"`;
+
+      chrome.storage.sync.get(key, function(result) {
+        result ? console.log("True") : console.log("false");
+        select.value = value;
+      });
+    } else {
+      var select = document.getElementById(selectid);
+      select.options[0].selected = true;
+
+      if (selectid === "dyn-inbox-select") {
+        chrome.storage.sync.set({
+          fileid: select.options[0].value
+        });
+      } else if (selectid === "dyn-toposition-select") {
+        chrome.storage.sync.set({
+          fileid: select.options[0].value
+        });
+      }
+    }
   }
 
-  /* async function getFiles(key) {
-    chrome.storage.sync.set({
-      files: body.files
-    });
+  useEffect(() => {
+    if (isOpen) {
+      chrome.storage.sync.get(["key"], function(result) {
+        const { key } = result;
 
-    updateSelect(body.files);
-  } */
+        if (key) {
+          restoreOptions();
+        }
+      });
+    }
+  }, [isOpen]);
 
   return (
     <>
@@ -199,9 +246,10 @@ function Settings({ isOpen, onClose }) {
                     Highlights are send to one of your choosen files.
                   </Text>
                   <Select
-                    id="dyn-files-select"
+                    id="dyn-inbox-select"
                     placeholder="Select a file"
                     mt={2}
+                    onChange={e => handleSelect(e)}
                   >
                     <option value="option1">File 1</option>
                   </Select>
@@ -211,9 +259,13 @@ function Settings({ isOpen, onClose }) {
                   <Text color="gray.500" fontSize="sm">
                     Add the highlight bookmark to the end or to the start
                   </Text>
-                  <Select mt={2}>
-                    <option value="start">Start</option>
-                    <option value="end">End</option>
+                  <Select
+                    id="dyn-toposition-select"
+                    mt={2}
+                    onChange={e => handleSelect(e)}
+                  >
+                    <option value="-1">Start</option>
+                    <option value="0">End</option>
                   </Select>
                 </FormControl>
               </ModalBody>
