@@ -26,10 +26,6 @@ function Widget() {
     const textarea = e.target;
     textarea.style.height = "";
     textarea.style.height = textarea.scrollHeight + "px";
-    console.log(
-      "TCL: handleResize -> textarea.scrollHeight",
-      textarea.scrollHeight
-    );
   }
 
   return (

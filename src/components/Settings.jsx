@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useState } from "react";
+import isKeyValid from "../util/api";
 
 import {
   Modal,
@@ -18,15 +19,33 @@ import {
   Icon,
   Link,
   Text,
-  SlideIn
+  SlideIn,
+  Alert,
+  AlertIcon
 } from "@chakra-ui/core";
 
 function Settings({ isOpen, onClose }) {
-  const [show, setShow] = React.useState(true);
-  const handleClick = () => setShow(!show);
+  const [isAlertVisible, setIsAlertVisible] = useState(false);
+  const [areDetailsVisible, setAreDetailsVisible] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const initialRef = React.useRef();
   const finalRef = React.useRef();
+
+  async function handleKeySave() {
+    const value = document.getElementById("dyn-api-key").value;
+
+    setIsLoading(true);
+    const response = await isKeyValid(value);
+    setIsLoading(false);
+
+    if (response) {
+      setAreDetailsVisible(true);
+      setIsAlertVisible(false);
+    } else {
+      setIsAlertVisible(true);
+    }
+  }
 
   return (
     <>
@@ -63,32 +82,46 @@ function Settings({ isOpen, onClose }) {
                       children={
                         <Icon
                           name="key"
-                          color={show ? "blue.500" : "gray.200"}
+                          color={areDetailsVisible ? "gray.200" : "blue.500"}
                         />
                       }
                     />
                     <Input
+                      id="dyn-api-key"
                       pr="4.5rem"
-                      type={show ? "text" : "password"}
+                      type={areDetailsVisible ? "password" : "text"}
                       placeholder="API Key"
-                      isDisabled={show ? false : true}
+                      isDisabled={areDetailsVisible ? true : false}
                       variant="filled"
                     />
                     <InputRightElement width="4.5rem">
                       <Button
                         h="1.75rem"
-                        variantColor={show ? "blue" : "gray"}
+                        variantColor={areDetailsVisible ? "gray" : "blue"}
                         size="sm"
-                        onClick={handleClick}
+                        onClick={handleKeySave}
                         loadingText="Testing"
+                        isLoading={isLoading}
                       >
-                        {show ? "Save" : "Reset"}
+                        {areDetailsVisible ? "Reset" : "Save"}
                       </Button>
                     </InputRightElement>
                   </InputGroup>
+                  <Alert
+                    status="error"
+                    variant="subtle"
+                    rounded="md"
+                    mt={2}
+                    lineHeight="shorter"
+                    d={isAlertVisible ? "block" : "none"}
+                  >
+                    <AlertIcon />
+                    We could'nt connect to Dynalist. Check the key and try
+                    again.
+                  </Alert>
                 </FormControl>
 
-                <FormControl mt={4} d={show ? "none" : "block"}>
+                <FormControl mt={4} d={areDetailsVisible ? "block" : "none"}>
                   <FormLabel fontWeight="bold">Highlight Inbox</FormLabel>
                   <Text color="gray.500" fontSize="sm">
                     Highlights are send to one of your choosen files.
@@ -99,7 +132,7 @@ function Settings({ isOpen, onClose }) {
                     <option value="option3">File 3</option>
                   </Select>
                 </FormControl>
-                <FormControl mt={4} d={show ? "none" : "block"}>
+                <FormControl mt={4} d={areDetailsVisible ? "block" : "none"}>
                   <FormLabel fontWeight="bold">Move to position</FormLabel>
                   <Text color="gray.500" fontSize="sm">
                     Add the highlight bookmark to the end or to the start
