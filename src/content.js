@@ -20,7 +20,7 @@ class Main extends React.Component {
 }
 
 const app = document.createElement("div");
-app.id = "my-extension-root";
+app.id = "dynalist-highlighter";
 
 document.body.appendChild(app);
 ReactDOM.render(<Main />, app);

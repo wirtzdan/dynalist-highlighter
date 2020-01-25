@@ -204,8 +204,6 @@ function Settings({ isOpen, onClose }) {
                     mt={2}
                   >
                     <option value="option1">File 1</option>
-                    <option value="option2">File 2</option>
-                    <option value="option3">File 3</option>
                   </Select>
                 </FormControl>
                 <FormControl mt={4} d={areDetailsVisible ? "block" : "none"}>
@@ -214,8 +212,8 @@ function Settings({ isOpen, onClose }) {
                     Add the highlight bookmark to the end or to the start
                   </Text>
                   <Select mt={2}>
-                    <option value="option1">Start</option>
-                    <option value="option2">End</option>
+                    <option value="start">Start</option>
+                    <option value="end">End</option>
                   </Select>
                 </FormControl>
               </ModalBody>

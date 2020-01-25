@@ -1,5 +1,5 @@
 /*global chrome*/
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 import Settings from "./Settings";
 
@@ -14,7 +14,12 @@ import {
 
 function Widget() {
   const [buttonText, setButtonText] = useState("Save Bookmark");
-  const [title, setTitle] = useState(document.title);
+  const [title, setTitle] = useState("");
+
+  useEffect(() => {
+    setTitle(document.title);
+    console.log(title);
+  }, []);
 
   const { isOpen, onOpen, onClose } = useDisclosure();
 
@@ -35,12 +40,14 @@ function Widget() {
       <Box
         w={280}
         borderWidth="1px"
-        rounded="md"
+        rounded="lg"
         p="3"
         pos="fixed"
         right="3"
         bottom="3"
         boxShadow="md"
+        bg="white"
+        zIndex={9999}
       >
         <Textarea
           placeholder="Title"
