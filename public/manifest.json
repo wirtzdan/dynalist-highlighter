@@ -1,21 +1,19 @@
 {
-  "name": "Dynalist Highlighter",
+  "short_name": "My Extension",
+  "name": "My Extension",
   "version": "1.0",
   "manifest_version": 2,
-  "icons": {
-    "16": "./icon/icon-on-16.png",
-    "48": "./icon/icon-on-48.png",
-    "128": "./icon/icon-on-128.png"
-  },
   "background": {
-    "scripts": ["background.js"],
-    "persistent": false
+    "scripts": ["app/background.js"]
   },
-
   "browser_action": {},
-  "options_ui": {
-    "page": "options.html",
-    "open_in_tab": false
-  },
-  "permissions": ["storage", "activeTab", "<all_urls>", "contextMenus"]
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "css": ["/static/css/app.css"],
+      "js": ["/static/js/content.js"]
+    }
+  ],
+  "web_accessible_resources": ["/static/css/content.css"],
+  "content_security_policy": "script-src 'self' 'sha256-GgRxrVOKNdB4LrRsVPDSbzvfdV4UqglmviH9GoBJ5jk='; object-src 'self'"
 }
