@@ -53,8 +53,12 @@ function Settings({ isOpen, onClose }) {
   }, [isOpen]);
 
   async function handleClick() {
-    const buttonText = document.getElementById("dyn-api-key-button").innerHTML;
-    const key = document.getElementById("dyn-api-key").value;
+    const buttonText = document
+      .getElementById("dyn-settings")
+      .contentWindow.document.getElementById("dyn-api-key-button").innerHTML;
+    const key = document
+      .getElementById("dyn-settings")
+      .contentWindow.document.getElementById("dyn-api-key").value;
 
     if (buttonText === "Save") {
       setIsLoading(true);
@@ -71,7 +75,9 @@ function Settings({ isOpen, onClose }) {
         setIsAlertVisible(true);
       }
     } else if (buttonText === "Reset") {
-      document.getElementById("dyn-api-key").value = "";
+      document
+        .getElementById("dyn-settings")
+        .contentWindow.document.getElementById("dyn-api-key").value = "";
       setAreDetailsVisible(false);
     }
   }
@@ -97,7 +103,9 @@ function Settings({ isOpen, onClose }) {
 
       if (key) {
         const files = await getFiles(key);
-        document.getElementById("dyn-api-key").value = key;
+        document
+          .getElementById("dyn-settings")
+          .contentWindow.document.getElementById("dyn-api-key").value = key;
         updateSelect(files);
         selectOption("dyn-inbox-select");
         selectOption("dyn-toposition-select");
@@ -115,7 +123,9 @@ function Settings({ isOpen, onClose }) {
       console.log("TCL: restoreOptions -> result", result);
 
       const files = await getFiles(key);
-      document.getElementById("dyn-api-key").value = key;
+      document
+        .getElementById("dyn-settings")
+        .contentWindow.document.getElementById("dyn-api-key").value = key;
       updateSelect(files);
       selectOption("dyn-inbox-select", fileid);
       selectOption("dyn-toposition-select", toposition);
@@ -126,7 +136,9 @@ function Settings({ isOpen, onClose }) {
 
   function updateSelect(files) {
     let options = "";
-    const select = document.getElementById("dyn-inbox-select");
+    const select = document
+      .getElementById("dyn-settings")
+      .contentWindow.document.getElementById("dyn-inbox-select");
 
     for (const file of files) {
       const option = `<option value="${file.id}">${file.title}</option>`;
@@ -138,7 +150,9 @@ function Settings({ isOpen, onClose }) {
 
   function selectOption(selectid, value) {
     if (value) {
-      var select = document.getElementById(selectid);
+      var select = document
+        .getElementById("dyn-settings")
+        .contentWindow.document.getElementById(selectid);
       const key = `"${value}"`;
 
       chrome.storage.sync.get(key, function(result) {
@@ -146,7 +160,9 @@ function Settings({ isOpen, onClose }) {
         select.value = value;
       });
     } else {
-      var select = document.getElementById(selectid);
+      var select = document
+        .getElementById("dyn-settings")
+        .contentWindow.document.getElementById(selectid);
       select.options[0].selected = true;
 
       if (selectid === "dyn-inbox-select") {
@@ -171,8 +187,6 @@ function Settings({ isOpen, onClose }) {
           onClose={onClose}
           isCentered
         >
-          <ModalOverlay opacity={styles.opacity} />
-
           <ScopeProvider scope={"#root .App"}>
             <Frame
               head={[
@@ -189,9 +203,11 @@ function Settings({ isOpen, onClose }) {
                   ></link>
                 </>
               ]}
+              id="dyn-settings"
             >
               <ThemeProvider theme={theme}>
                 <FrameProvider>
+                  <ModalOverlay opacity={styles.opacity} />
                   <ModalContent rounded="lg" {...styles}>
                     <ModalHeader>Settings</ModalHeader>
                     <ModalCloseButton top="16px" right="24px" />
