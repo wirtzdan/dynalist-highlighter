@@ -177,7 +177,7 @@ function Settings({ isOpen, onClose }) {
                       <Icon
                         mr={2}
                         name="check-circle"
-                        size="18px"
+                        size="16px"
                         color="green.500"
                         d={areDetailsVisible ? "block" : "none"}
                       />
