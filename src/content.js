@@ -2,19 +2,44 @@
 /* src/content.js */
 import React from "react";
 import ReactDOM from "react-dom";
-import Frame, { FrameContextConsumer } from "react-frame-component";
-import "./content.css";
 import Widget from "./components/Widget";
-import { ThemeProvider, CSSReset } from "@chakra-ui/core";
+import { ThemeProvider } from "@chakra-ui/core";
 import theme from "./theme";
+import "./util/highlighter";
+import "./content.css";
+import "./cssreset.css";
+import "./app.css";
+import Frame from "react-frame-component";
+import { ScopeProvider } from "./scope-provider";
+import { FrameProvider } from "./frame-provider";
 
 class Main extends React.Component {
   render() {
     return (
-      <ThemeProvider theme={theme}>
-        <CSSReset />
-        <Widget />
-      </ThemeProvider>
+      <ScopeProvider scope={"#root .App"}>
+        <Frame
+          head={[
+            <>
+              <link
+                type="text/css"
+                rel="stylesheet"
+                href={chrome.runtime.getURL("/static/css/content.css")}
+              ></link>
+              <link
+                type="text/css"
+                rel="stylesheet"
+                href={chrome.runtime.getURL("/static/css/cssreset.css")}
+              ></link>
+            </>
+          ]}
+        >
+          <ThemeProvider theme={theme}>
+            <FrameProvider>
+              <Widget />
+            </FrameProvider>
+          </ThemeProvider>
+        </Frame>
+      </ScopeProvider>
     );
   }
 }
@@ -28,11 +53,9 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
     sendResponse("Response: Deactivate");
   } else if (request.msg === "activate" && active === false) {
     const app = document.createElement("div");
-    app.id = "dynalist-highlighter";
-
+    app.id = "dynalist-highlighter-app";
     document.body.appendChild(app);
     ReactDOM.render(<Main />, app);
-
     active = true;
     sendResponse("Activated.");
   } else {

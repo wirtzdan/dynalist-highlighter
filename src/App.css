@@ -1,33 +1,62 @@
-.App {
-  text-align: center;
+:root {
+  --dyn-highlight: #ffec99;
+  --dyn-highlight-hover: #ffe066;
 }
 
-.App-logo {
-  animation: App-logo-spin infinite 20s linear;
-  height: 80px;
+.dynalist-highlighter-app {
+  width: 400px;
+  height: 100%;
+  position: fixed;
+  top: 0px;
+  right: 0px;
+  z-index: 2147483647;
+  background-color: white;
+  box-shadow: 0px 0px 5px #0000009e;
 }
 
-.App-header {
-  background-color: #222;
-  height: 150px;
-  padding: 20px;
-  color: white;
+.dynalist-highlighter {
+  z-index: 9999 !important;
 }
 
-.App-title {
-  font-size: 1.5em;
+.dyn-highlight {
+  position: relative !important;
+  font-family: inherit !important;
+  font-size: inherit !important;
+  color: inherit !important;
+  font-weight: inherit !important;
+  cursor: pointer !important;
+  background-color: var(--dyn-highlight);
+  box-shadow: 0px 3px 0px 0px var(--dyn-highlight),
+    0px -3px 0px 0px var(--dyn-highlight);
 }
 
-.App-intro {
-  font-size: large;
+.dyn-highlight:hover {
+  background-color: var(--dyn-highlight-hover);
+  box-shadow: 0px 3px 0px 0px var(--dyn-highlight-hover),
+    0px -3px 0px 0px var(--dyn-highlight-hover);
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
+.dynalist-highlighter-app {
+  width: 400px;
+  height: 100%;
+  position: fixed;
+  top: 0px;
+  right: 0px;
+  z-index: 2147483647;
+  background-color: white;
+  box-shadow: 0px 0px 5px #0000009e;
+}
 
-  to {
-    transform: rotate(360deg);
-  }
+#dynalist-highlighter-app iframe {
+  position: fixed;
+  bottom: 0;
+  right: 0;
+}
+
+#chakra-portal-1 iframe {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
 }

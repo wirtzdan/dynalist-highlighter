@@ -1,5 +1,11 @@
 /*global chrome*/
 import React, { useState, useEffect } from "react";
+import Frame from "react-frame-component";
+import { ThemeProvider } from "@chakra-ui/core";
+import theme from "../theme";
+import { ScopeProvider } from "../scope-provider";
+import { FrameProvider } from "../frame-provider";
+
 import { isKeyValid, getFiles } from "../util/api";
 
 import {
@@ -156,124 +162,156 @@ function Settings({ isOpen, onClose }) {
   }
 
   return (
-    <>
-      <SlideIn in={isOpen}>
-        {styles => (
-          <Modal
-            initialFocusRef={initialRef}
-            finalFocusRef={finalRef}
-            isOpen={isOpen}
-            onClose={onClose}
-            isCentered
-          >
-            <ModalOverlay opacity={styles.opacity} />
-            <ModalContent rounded="lg" {...styles}>
-              <ModalHeader>Settings</ModalHeader>
-              <ModalCloseButton top="16px" right="24px" />
-              <ModalBody pb={6}>
-                <FormControl>
-                  <FormLabel fontWeight="bold">
-                    <Flex align="center">
-                      <Icon
-                        mr={2}
-                        name="check-circle"
-                        size="16px"
-                        color="green.500"
-                        d={areDetailsVisible ? "block" : "none"}
-                      />
-                      <Text>API Key</Text>
-                    </Flex>
-                  </FormLabel>
-                  <Text color="gray.500" fontSize="sm">
-                    {" "}
-                    You can find your API key on the{" "}
-                    <Link
-                      href="https://dynalist.io/developer"
-                      isExternal
-                      color="blue.500"
-                    >
-                      Developer Page
-                    </Link>
-                    .
-                  </Text>
-                  <InputGroup size="md" mt={2}>
-                    <InputLeftElement
-                      children={
-                        <Icon
-                          name="key"
-                          color={areDetailsVisible ? "gray.200" : "blue.500"}
-                        />
-                      }
-                    />
-                    <Input
-                      id="dyn-api-key"
-                      pr="4.5rem"
-                      type={areDetailsVisible ? "password" : "text"}
-                      placeholder="API Key"
-                      isDisabled={areDetailsVisible ? true : false}
-                      variant="filled"
-                    />
-                    <InputRightElement width="4.5rem">
-                      <Button
-                        id="dyn-api-key-button"
-                        h="1.75rem"
-                        variantColor={areDetailsVisible ? "gray" : "blue"}
-                        size="sm"
-                        onClick={handleClick}
-                        loadingText="Testing"
-                        isLoading={isLoading}
-                      >
-                        {areDetailsVisible ? "Reset" : "Save"}
-                      </Button>
-                    </InputRightElement>
-                  </InputGroup>
-                  <Alert
-                    status="error"
-                    variant="subtle"
-                    rounded="md"
-                    mt={2}
-                    lineHeight="shorter"
-                    d={isAlertVisible ? "block" : "none"}
-                  >
-                    <AlertIcon />
-                    There was an error. Verify your API Key.
-                  </Alert>
-                </FormControl>
+    <SlideIn in={isOpen}>
+      {styles => (
+        <Modal
+          initialFocusRef={initialRef}
+          finalFocusRef={finalRef}
+          isOpen={isOpen}
+          onClose={onClose}
+          isCentered
+        >
+          <ModalOverlay opacity={styles.opacity} />
 
-                <FormControl mt={4} d={areDetailsVisible ? "block" : "none"}>
-                  <FormLabel fontWeight="bold">Highlight Inbox</FormLabel>
-                  <Text color="gray.500" fontSize="sm">
-                    Highlights are send to one of your choosen files.
-                  </Text>
-                  <Select
-                    id="dyn-inbox-select"
-                    placeholder="Select a file"
-                    mt={2}
-                    onChange={e => handleSelect(e)}
-                  >
-                    <option value="option1">File 1</option>
-                  </Select>
-                </FormControl>
-                <FormControl mt={4} d={areDetailsVisible ? "block" : "none"}>
-                  <FormLabel fontWeight="bold">Move to position</FormLabel>
-                  <Text color="gray.500" fontSize="sm">
-                    Add the highlight bookmark to the end or to the start
-                  </Text>
-                  <Select
-                    id="dyn-toposition-select"
-                    mt={2}
-                    onChange={e => handleSelect(e)}
-                  >
-                    <option value="0">Start</option>
-                    <option value="-1">End</option>
-                  </Select>
-                </FormControl>
-              </ModalBody>
-            </ModalContent>
-          </Modal>
-        )}
-      </SlideIn>
-    </>
+          <ScopeProvider scope={"#root .App"}>
+            <Frame
+              head={[
+                <>
+                  <link
+                    type="text/css"
+                    rel="stylesheet"
+                    href={chrome.runtime.getURL("/static/css/content.css")}
+                  ></link>
+                  <link
+                    type="text/css"
+                    rel="stylesheet"
+                    href={chrome.runtime.getURL("/static/css/cssreset.css")}
+                  ></link>
+                </>
+              ]}
+            >
+              <ThemeProvider theme={theme}>
+                <FrameProvider>
+                  <ModalContent rounded="lg" {...styles}>
+                    <ModalHeader>Settings</ModalHeader>
+                    <ModalCloseButton top="16px" right="24px" />
+                    <ModalBody pb={6}>
+                      <FormControl>
+                        <FormLabel fontWeight="bold">
+                          <Flex align="center">
+                            <Icon
+                              mr={2}
+                              name="check-circle"
+                              size="16px"
+                              color="green.500"
+                              d={areDetailsVisible ? "block" : "none"}
+                            />
+                            <Text>API Key</Text>
+                          </Flex>
+                        </FormLabel>
+                        <Text color="gray.500" fontSize="sm">
+                          {" "}
+                          You can find your API key on the{" "}
+                          <Link
+                            href="https://dynalist.io/developer"
+                            isExternal
+                            color="blue.500"
+                          >
+                            Developer Page
+                          </Link>
+                          .
+                        </Text>
+                        <InputGroup size="md" mt={2}>
+                          <InputLeftElement
+                            children={
+                              <Icon
+                                name="key"
+                                color={
+                                  areDetailsVisible ? "gray.200" : "blue.500"
+                                }
+                              />
+                            }
+                          />
+                          <Input
+                            id="dyn-api-key"
+                            pr="4.5rem"
+                            type={areDetailsVisible ? "password" : "text"}
+                            placeholder="API Key"
+                            isDisabled={areDetailsVisible ? true : false}
+                            variant="filled"
+                          />
+                          <InputRightElement width="4.5rem">
+                            <Button
+                              id="dyn-api-key-button"
+                              h="1.75rem"
+                              variantColor={areDetailsVisible ? "gray" : "blue"}
+                              size="sm"
+                              onClick={handleClick}
+                              loadingText="Testing"
+                              isLoading={isLoading}
+                            >
+                              {areDetailsVisible ? "Reset" : "Save"}
+                            </Button>
+                          </InputRightElement>
+                        </InputGroup>
+                        <Alert
+                          status="error"
+                          variant="subtle"
+                          rounded="md"
+                          mt={2}
+                          lineHeight="shorter"
+                          d={isAlertVisible ? "block" : "none"}
+                        >
+                          <AlertIcon />
+                          There was an error. Verify your API Key.
+                        </Alert>
+                      </FormControl>
+
+                      <FormControl
+                        mt={4}
+                        d={areDetailsVisible ? "block" : "none"}
+                      >
+                        <FormLabel fontWeight="bold">Highlight Inbox</FormLabel>
+                        <Text color="gray.500" fontSize="sm">
+                          Highlights are send to one of your choosen files.
+                        </Text>
+                        <Select
+                          id="dyn-inbox-select"
+                          placeholder="Select a file"
+                          mt={2}
+                          onChange={e => handleSelect(e)}
+                        >
+                          <option value="option1">File 1</option>
+                        </Select>
+                      </FormControl>
+                      <FormControl
+                        mt={4}
+                        d={areDetailsVisible ? "block" : "none"}
+                      >
+                        <FormLabel fontWeight="bold">
+                          Move to position
+                        </FormLabel>
+                        <Text color="gray.500" fontSize="sm">
+                          Add the highlight bookmark to the end or to the start
+                        </Text>
+                        <Select
+                          id="dyn-toposition-select"
+                          mt={2}
+                          onChange={e => handleSelect(e)}
+                        >
+                          <option value="0">Start</option>
+                          <option value="-1">End</option>
+                        </Select>
+                      </FormControl>
+                    </ModalBody>
+                  </ModalContent>
+                </FrameProvider>
+              </ThemeProvider>
+            </Frame>
+          </ScopeProvider>
+        </Modal>
+      )}
+    </SlideIn>
   );
 }
 
