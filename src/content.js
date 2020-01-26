@@ -19,24 +19,23 @@ class Main extends React.Component {
   }
 }
 
-const app = document.createElement("div");
-app.id = "dynalist-highlighter";
-
-document.body.appendChild(app);
-ReactDOM.render(<Main />, app);
-
-app.style.display = "none";
+let active = false;
 
 chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
-  if (request.message === "clicked_browser_action") {
-    toggle();
+  console.log("TCL: request", request);
+
+  if (request.msg === "deactivate") {
+    sendResponse("Response: Deactivate");
+  } else if (request.msg === "activate" && active === false) {
+    const app = document.createElement("div");
+    app.id = "dynalist-highlighter";
+
+    document.body.appendChild(app);
+    ReactDOM.render(<Main />, app);
+
+    active = true;
+    sendResponse("Activated.");
+  } else {
+    sendResponse("Response: Nothing happend.");
   }
 });
-
-function toggle() {
-  if (app.style.display === "none") {
-    app.style.display = "block";
-  } else {
-    app.style.display = "none";
-  }
-}
