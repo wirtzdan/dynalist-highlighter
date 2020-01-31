@@ -19,25 +19,19 @@ function addHighlight(e) {
 function updateButtonText() {
   const highlights = highlighter.highlights;
   const length = highlights.length;
+  const saveButton = document
+    .getElementById("dyn-widget")
+    .contentWindow.document.getElementById("dyn-save-button");
 
-  if (length > 0) {
-    document
-      .getElementById("dyn-widget")
-      .contentWindow.document.getElementById(
-        "dyn-save-button"
-      ).innerHTML = `Save ${length} Highlights`;
-  } else {
-    document
-      .getElementById("dyn-widget")
-      .contentWindow.document.getElementById(
-        "dyn-save-button"
-      ).innerHTML = `Save Bookmark`;
-  }
-
-  if (highlighter.highlights.length > 0) {
-    document.getElementsByClassName("dyn-save-button")[0].style.display =
-      "flex";
-  }
+  // if (length > 0) {
+  //   saveButton.removeChild(saveButton.firstChild);
+  //   const text = document.createTextNode(`Save ${length} Highlights`);
+  //   saveButton.appendChild(text);
+  // } else {
+  //   saveButton.removeChild(saveButton.firstChild);
+  //   const text = document.createTextNode(`Save Bookmark`);
+  //   saveButton.appendChild(text);
+  // }
 }
 
 function removeHighlight(e) {
@@ -53,9 +47,8 @@ function removeHighlight(e) {
 // ---- Handle Functions ---- //
 function handleMouseup(e) {
   if (e.target.className === "dyn-highlight") {
-    console.log("Clicked on a highlight");
     removeHighlight(e);
-  } else {
+  } else if (!rangy.getSelection.isCollapsed) {
     rangy.getSelection().expand("word", {
       trim: true
     });
