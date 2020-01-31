@@ -80,5 +80,7 @@ export async function sendToDynalist(highlights) {
     });
   }
 
-  return response;
+  const nodeid = response.data.new_node_ids[0];
+
+  return { fileid, nodeid };
 }

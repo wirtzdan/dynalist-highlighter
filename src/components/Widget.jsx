@@ -22,6 +22,9 @@ function Widget() {
   const bgColor = { light: "white", dark: "gray.700" };
   const color = { light: "gray.800", dark: "white" };
 
+  const [success, setSuccess] = useState(false);
+  const [url, setUrl] = useState("");
+
   useEffect(() => {
     setTitle(document.title);
   }, []);
@@ -40,9 +43,15 @@ function Widget() {
   }
 
   async function handleClick() {
-    setIsLoading(true);
-    const response = await sendToDynalist(highlighter.highlights);
-    setIsLoading(false);
+    if (success) {
+      window.open(url, "_blank");
+    } else {
+      setIsLoading(true);
+      const { fileid, nodeid } = await sendToDynalist(highlighter.highlights);
+      setUrl(`https://dynalist.io/d/${fileid}#z=${nodeid}`);
+      setIsLoading(false);
+      setSuccess(true);
+    }
   }
 
   return (
@@ -68,6 +77,7 @@ function Widget() {
           variant="unstyled"
           height="auto"
           minH={2}
+          isDisabled={success}
           onInput={e => handleResize(e)}
           pt={0}
           fontWeight="600"
@@ -77,15 +87,17 @@ function Widget() {
         />
         <Flex justify="space-between">
           <Button
-            variantColor="blue"
+            variantColor={success ? "green" : "blue"}
+            rightIcon={success ? "external-link" : ""}
             size="sm"
             loadingText="Saving"
             isLoading={isLoading}
             onClick={handleClick}
             id="dyn-save-button"
           >
-            Save Bookmark
+            {success ? "Open in Dynalist" : "Save Bookmark"}
           </Button>
+
           <Flex>
             <IconButton
               icon="settings"
