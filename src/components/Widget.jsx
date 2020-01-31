@@ -1,6 +1,7 @@
 /*global chrome*/
 import React, { useState, useEffect } from "react";
 import { sendToDynalist } from "../util/api";
+import { highlighter } from "../util/highlighter";
 
 import Settings from "./Settings";
 
@@ -10,13 +11,17 @@ import {
   Button,
   Flex,
   IconButton,
-  useDisclosure
+  useDisclosure,
+  useColorMode
 } from "@chakra-ui/core";
 
 function Widget() {
   const [buttonText, setButtonText] = useState("Save Bookmark");
   const [title, setTitle] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const { colorMode, toggleColorMode } = useColorMode();
+  const bgColor = { light: "white", dark: "gray.700" };
+  const color = { light: "gray.800", dark: "white" };
 
   useEffect(() => {
     setTitle(document.title);
@@ -38,8 +43,9 @@ function Widget() {
 
   async function handleClick() {
     setIsLoading(true);
-    const response = await sendToDynalist();
+    const response = await sendToDynalist(highlighter.highlights);
     setIsLoading(false);
+    console.log("TCL: handleClick -> response", response);
   }
 
   return (
@@ -54,7 +60,7 @@ function Widget() {
         right="3"
         bottom="3"
         boxShadow="md"
-        bg="white"
+        bg={bgColor[colorMode]}
         zIndex={9999}
       >
         <Textarea
@@ -70,6 +76,7 @@ function Widget() {
           fontWeight="600"
           textDecoration="underline"
           id="dyn-title"
+          color={color[colorMode]}
         />
         <Flex justify="space-between">
           <Button
@@ -78,6 +85,7 @@ function Widget() {
             loadingText="Saving"
             isLoading={isLoading}
             onClick={handleClick}
+            id="dyn-save-button"
           >
             {buttonText}
           </Button>

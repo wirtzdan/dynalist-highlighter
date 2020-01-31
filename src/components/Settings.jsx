@@ -30,13 +30,18 @@ import {
   SlideIn,
   Alert,
   AlertIcon,
-  Flex
+  Flex,
+  Divider,
+  useColorMode
 } from "@chakra-ui/core";
 
 function Settings({ isOpen, onClose }) {
   const [isAlertVisible, setIsAlertVisible] = useState(false);
   const [areDetailsVisible, setAreDetailsVisible] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const { colorMode, toggleColorMode } = useColorMode();
+  const color = { light: "gray.800", dark: "white" };
+  const descColor = { light: "gray.600", dark: "gray.300" };
 
   const initialRef = React.useRef();
   const finalRef = React.useRef();
@@ -206,14 +211,18 @@ function Settings({ isOpen, onClose }) {
               ]}
               id="dyn-settings"
             >
-              <ThemeProvider theme={theme}>
+              <ChakraProvider>
                 <FrameProvider>
                   <ModalOverlay opacity={styles.opacity} />
                   <ModalContent rounded="lg" {...styles}>
-                    <ModalHeader>Settings</ModalHeader>
-                    <ModalCloseButton top="16px" right="24px" />
+                    <ModalHeader color={color[colorMode]}>Settings</ModalHeader>
+                    <ModalCloseButton
+                      top="16px"
+                      right="24px"
+                      color={color[colorMode]}
+                    />
                     <ModalBody pb={6}>
-                      <FormControl>
+                      <FormControl color={color[colorMode]}>
                         <FormLabel fontWeight="bold">
                           <Flex align="center">
                             <Icon
@@ -226,7 +235,7 @@ function Settings({ isOpen, onClose }) {
                             <Text>API Key</Text>
                           </Flex>
                         </FormLabel>
-                        <Text color="gray.500" fontSize="sm">
+                        <Text color={descColor[colorMode]} fontSize="sm">
                           {" "}
                           You can find your API key on the{" "}
                           <Link
@@ -283,13 +292,14 @@ function Settings({ isOpen, onClose }) {
                           There was an error. Verify your API Key.
                         </Alert>
                       </FormControl>
-
                       <FormControl
                         mt={4}
                         d={areDetailsVisible ? "block" : "none"}
                       >
-                        <FormLabel fontWeight="bold">Highlight Inbox</FormLabel>
-                        <Text color="gray.500" fontSize="sm">
+                        <FormLabel fontWeight="bold" color={color[colorMode]}>
+                          Highlight Inbox
+                        </FormLabel>
+                        <Text color={descColor[colorMode]} fontSize="sm">
                           Highlights are send to one of your choosen files.
                         </Text>
                         <Select
@@ -305,10 +315,10 @@ function Settings({ isOpen, onClose }) {
                         mt={4}
                         d={areDetailsVisible ? "block" : "none"}
                       >
-                        <FormLabel fontWeight="bold">
+                        <FormLabel fontWeight="bold" color={color[colorMode]}>
                           Move to position
                         </FormLabel>
-                        <Text color="gray.500" fontSize="sm">
+                        <Text color={descColor[colorMode]} fontSize="sm">
                           Add the highlight bookmark to the end or to the start
                         </Text>
                         <Select
@@ -329,10 +339,17 @@ function Settings({ isOpen, onClose }) {
                         >
                           Give Feedback
                         </Link>
+                        <IconButton
+                          icon={colorMode === "light" ? "sun" : "moon"}
+                          size="sm"
+                          onClick={toggleColorMode}
+                          variant="ghost"
+                        ></IconButton>
+                      </Flex>
                     </ModalBody>
                   </ModalContent>
                 </FrameProvider>
-              </ThemeProvider>
+              </ChakraProvider>
             </Frame>
           </ScopeProvider>
         </Modal>
