@@ -6,21 +6,38 @@ import "rangy/lib/rangy-serializer";
 
 rangy.init();
 
-const highlighter = rangy.createHighlighter();
+export const highlighter = rangy.createHighlighter();
 highlighter.addClassApplier(rangy.createClassApplier("dyn-highlight"));
 
 function addHighlight(e) {
   highlighter.highlightSelection("dyn-highlight");
   highlighter.getHighlightForElement(e.target);
   rangy.getSelection().removeAllRanges();
+  updateButtonText();
+}
 
-  //   document.getElementsByClassName("dyn-highlight-number")[0].innerHTML =
-  //     highlighter.highlights.length;
+function updateButtonText() {
+  const highlights = highlighter.highlights;
+  const length = highlights.length;
 
-  //   if (highlighter.highlights.length > 0) {
-  //     document.getElementsByClassName("dyn-highlight-counter")[0].style.display =
-  //       "flex";
-  //   }
+  if (length > 0) {
+    document
+      .getElementById("dyn-widget")
+      .contentWindow.document.getElementById(
+        "dyn-save-button"
+      ).innerHTML = `Save ${length} Highlights`;
+  } else {
+    document
+      .getElementById("dyn-widget")
+      .contentWindow.document.getElementById(
+        "dyn-save-button"
+      ).innerHTML = `Save Bookmark`;
+  }
+
+  if (highlighter.highlights.length > 0) {
+    document.getElementsByClassName("dyn-save-button")[0].style.display =
+      "flex";
+  }
 }
 
 function removeHighlight(e) {
@@ -29,13 +46,7 @@ function removeHighlight(e) {
 
   if (highlight) {
     highlighter.removeHighlights([highlight]);
-    // document.getElementsByClassName("dyn-highlight-number")[0].innerHTML =
-    //   highlighter.highlights.length;
-    // if (highlighter.highlights.length === 0) {
-    //   document.getElementsByClassName(
-    //     "dyn-highlight-counter"
-    //   )[0].style.display = "none";
-    // }
+    updateButtonText();
   }
 }
 
@@ -54,14 +65,6 @@ function handleMouseup(e) {
 
 function addAllEventListener() {
   document.addEventListener("mouseup", e => handleMouseup(e));
-
-  //   document.addEventListener("mousedown", e => handleMousedown(e));
-
-  //   document.addEventListener("mousedown", e => addHighlight(e));
-
-  //   document
-  //     .getElementsByClassName("dyn-button")[0]
-  //     .addEventListener("click", () => handleClick());
 }
 
 addAllEventListener();
