@@ -16,16 +16,14 @@ import {
 } from "@chakra-ui/core";
 
 function Widget() {
-  const [buttonText, setButtonText] = useState("Save Bookmark");
   const [title, setTitle] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const { colorMode, toggleColorMode } = useColorMode();
+  const { colorMode } = useColorMode();
   const bgColor = { light: "white", dark: "gray.700" };
   const color = { light: "gray.800", dark: "white" };
 
   useEffect(() => {
     setTitle(document.title);
-    console.log(title);
   }, []);
 
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -45,7 +43,6 @@ function Widget() {
     setIsLoading(true);
     const response = await sendToDynalist(highlighter.highlights);
     setIsLoading(false);
-    console.log("TCL: handleClick -> response", response);
   }
 
   return (
@@ -87,7 +84,7 @@ function Widget() {
             onClick={handleClick}
             id="dyn-save-button"
           >
-            {buttonText}
+            Save Bookmark
           </Button>
           <Flex>
             <IconButton
