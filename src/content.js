@@ -3,15 +3,14 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import Widget from "./components/Widget";
-import { ThemeProvider } from "@chakra-ui/core";
-import theme from "./theme";
 import "./util/highlighter";
 import "./content.css";
 import "./cssreset.css";
 import "./app.css";
 import Frame from "react-frame-component";
-import { ScopeProvider } from "./scope-provider";
-import { FrameProvider } from "./frame-provider";
+import { ScopeProvider } from "./util/scope-provider";
+import { FrameProvider } from "./util/frame-provider";
+import { ChakraProvider } from "./util/chakra-provider";
 
 class Main extends React.Component {
   render() {
@@ -32,12 +31,13 @@ class Main extends React.Component {
               ></link>
             </>
           ]}
+          id="dyn-widget"
         >
-          <ThemeProvider theme={theme}>
+          <ChakraProvider>
             <FrameProvider>
               <Widget />
             </FrameProvider>
-          </ThemeProvider>
+          </ChakraProvider>
         </Frame>
       </ScopeProvider>
     );

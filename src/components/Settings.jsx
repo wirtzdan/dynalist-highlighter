@@ -1,10 +1,11 @@
 /*global chrome*/
 import React, { useState, useEffect } from "react";
 import Frame from "react-frame-component";
-import { ThemeProvider } from "@chakra-ui/core";
+import { ThemeProvider, IconButton } from "@chakra-ui/core";
 import theme from "../theme";
-import { ScopeProvider } from "../scope-provider";
-import { FrameProvider } from "../frame-provider";
+import { ScopeProvider } from "../util/scope-provider";
+import { FrameProvider } from "../util/frame-provider";
+import { ChakraProvider } from "../util/chakra-provider";
 
 import { isKeyValid, getFiles } from "../util/api";
 
