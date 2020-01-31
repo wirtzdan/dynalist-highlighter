@@ -320,6 +320,15 @@ function Settings({ isOpen, onClose }) {
                           <option value="-1">End</option>
                         </Select>
                       </FormControl>
+                      <Divider my={4} />
+                      <Flex justify="space-between" align="center">
+                        <Link
+                          to="mailto:hello@danielwirtz.com"
+                          color="gray.300"
+                          fontSize="sm"
+                        >
+                          Give Feedback
+                        </Link>
                     </ModalBody>
                   </ModalContent>
                 </FrameProvider>
