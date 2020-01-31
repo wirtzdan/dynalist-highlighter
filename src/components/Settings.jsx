@@ -1,8 +1,6 @@
 /*global chrome*/
 import React, { useState, useEffect } from "react";
 import Frame from "react-frame-component";
-import { ThemeProvider, IconButton } from "@chakra-ui/core";
-import theme from "../theme";
 import { ScopeProvider } from "../util/scope-provider";
 import { FrameProvider } from "../util/frame-provider";
 import { ChakraProvider } from "../util/chakra-provider";
@@ -28,6 +26,7 @@ import {
   Link,
   Text,
   SlideIn,
+  IconButton,
   Alert,
   AlertIcon,
   Flex,
