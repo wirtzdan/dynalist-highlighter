@@ -11,6 +11,7 @@ import Frame from "react-frame-component";
 import { ScopeProvider } from "./util/scope-provider";
 import { FrameProvider } from "./util/frame-provider";
 import { ChakraProvider } from "./util/chakra-provider";
+import { CSSReset } from "@chakra-ui/core";
 
 class Main extends React.Component {
   render() {
@@ -24,17 +25,13 @@ class Main extends React.Component {
                 rel="stylesheet"
                 href={chrome.runtime.getURL("/static/css/content.css")}
               ></link>
-              <link
-                type="text/css"
-                rel="stylesheet"
-                href={chrome.runtime.getURL("/static/css/cssreset.css")}
-              ></link>
             </>
           ]}
           id="dyn-widget"
         >
           <ChakraProvider>
             <FrameProvider>
+              <CSSReset />
               <Widget />
             </FrameProvider>
           </ChakraProvider>

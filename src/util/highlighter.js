@@ -24,13 +24,13 @@ function updateButtonText() {
     .contentWindow.document.getElementById("dyn-save-button");
 
   // if (length > 0) {
-  //   saveButton.removeChild(saveButton.firstChild);
-  //   const text = document.createTextNode(`Save ${length} Highlights`);
-  //   saveButton.appendChild(text);
+  //   if (length === 1) {
+  //     saveButton.innerText = `Save ${length} Highlight`;
+  //   } else {
+  //     saveButton.innerText = `Save ${length} Highlights`;
+  //   }
   // } else {
-  //   saveButton.removeChild(saveButton.firstChild);
-  //   const text = document.createTextNode(`Save Bookmark`);
-  //   saveButton.appendChild(text);
+  //   saveButton.innerText = `Save Bookmark`;
   // }
 }
 

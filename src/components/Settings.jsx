@@ -31,7 +31,8 @@ import {
   AlertIcon,
   Flex,
   Divider,
-  useColorMode
+  useColorMode,
+  CSSReset
 } from "@chakra-ui/core";
 
 function Settings({ isOpen, onClose, setWidgetState }) {
@@ -210,16 +211,12 @@ function Settings({ isOpen, onClose, setWidgetState }) {
                     rel="stylesheet"
                     href={chrome.runtime.getURL("/static/css/content.css")}
                   ></link>
-                  <link
-                    type="text/css"
-                    rel="stylesheet"
-                    href={chrome.runtime.getURL("/static/css/cssreset.css")}
-                  ></link>
                 </>
               ]}
               id="dyn-settings"
             >
               <ChakraProvider>
+                <CSSReset />
                 <FrameProvider>
                   <ModalOverlay opacity={styles.opacity} />
                   <ModalContent
@@ -347,7 +344,7 @@ function Settings({ isOpen, onClose, setWidgetState }) {
                       <Divider my={4} />
                       <Flex justify="space-between" align="center">
                         <Link
-                          href="mailto:hello@danielwirtz.com"
+                          href="mailto:danielwirtzx@gmail.com"
                           color="gray.300"
                           fontSize="sm"
                           isExternal

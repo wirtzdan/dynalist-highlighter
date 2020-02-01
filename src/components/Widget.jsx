@@ -23,7 +23,6 @@ function Widget() {
   const borderColor = { light: "gray.200", dark: "gray.700" };
   const color = { light: "gray.800", dark: "white" };
 
-  const [success, setSuccess] = useState(false);
   const [widgetState, setWidgetState] = useState("setup");
   const [url, setUrl] = useState("");
 
