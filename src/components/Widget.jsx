@@ -19,17 +19,21 @@ function Widget() {
   const [title, setTitle] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const { colorMode } = useColorMode();
-  const bgColor = { light: "white", dark: "gray.700" };
+  const bgColor = { light: "white", dark: "gray.800" };
+  const borderColor = { light: "gray.200", dark: "gray.700" };
   const color = { light: "gray.800", dark: "white" };
 
   const [success, setSuccess] = useState(false);
+  const [widgetState, setWidgetState] = useState("setup");
   const [url, setUrl] = useState("");
+
+  const { isOpen, onOpen, onClose } = useDisclosure();
 
   useEffect(() => {
     setTitle(document.title);
-  }, []);
 
   const { isOpen, onOpen, onClose } = useDisclosure();
+        resizeTextareaToContent();
 
   let handleTitleChange = e => {
     let value = e.target.value;
@@ -38,6 +42,10 @@ function Widget() {
 
   function handleResize(e) {
     const textarea = e.target;
+  function resizeTextareaToContent() {
+    const textarea = document
+      .getElementById("dyn-widget")
+      .contentWindow.document.getElementById("dyn-title");
     textarea.style.height = "";
     textarea.style.height = textarea.scrollHeight + "px";
   }
@@ -50,16 +58,21 @@ function Widget() {
       const { fileid, nodeid } = await sendToDynalist(highlighter.highlights);
       setUrl(`https://dynalist.io/d/${fileid}#z=${nodeid}`);
       setIsLoading(false);
-      setSuccess(true);
+      setWidgetState("success");
     }
   }
 
   return (
     <>
-      <Settings isOpen={isOpen} onClose={onClose} />
+      <Settings
+        isOpen={isOpen}
+        onClose={onClose}
+        setWidgetState={setWidgetState}
+      />
       <Box
         w={300}
         borderWidth="1px"
+        borderColor={borderColor[colorMode]}
         rounded="lg"
         roundedBottomRight={2}
         p="3"
@@ -78,8 +91,10 @@ function Widget() {
           variant="unstyled"
           height="auto"
           minH={2}
-          isDisabled={success}
-          onInput={e => handleResize(e)}
+          isDisabled={
+            widgetState === "setup" || widgetState === "success" ? true : false
+          }
+          opacity={widgetState === "setup" ? "50%" : ""}
           pt={0}
           fontWeight="600"
           textDecoration="underline"
@@ -88,13 +103,14 @@ function Widget() {
         />
         <Flex justify="space-between">
           <Button
-            variantColor={success ? "green" : "blue"}
-            rightIcon={success ? "external-link" : ""}
+            variantColor={widgetState === "success" ? "green" : "blue"}
+            rightIcon={widgetState === "success" ? "external-link" : ""}
             size="sm"
             loadingText="Saving"
             isLoading={isLoading}
             onClick={handleClick}
             id="dyn-save-button"
+            isDisabled={widgetState === "setup" ? true : false}
           >
             {success ? "Open in Dynalist" : "Save Bookmark"}
           </Button>
@@ -102,7 +118,7 @@ function Widget() {
           <Flex>
             <IconButton
               icon="settings"
-              variant="ghost"
+              variant={widgetState === "setup" ? "solid" : "ghost"}
               variantColor="gray"
               size="sm"
               onClick={onOpen}
