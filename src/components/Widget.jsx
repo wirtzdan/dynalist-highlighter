@@ -106,7 +106,7 @@ function Widget() {
           onInput={resizeTextareaToContent}
           pt={0}
           fontWeight="600"
-          textDecoration="underline"
+          lineHeight="1.2"
           id="dyn-title"
           color={color[colorMode]}
         />
