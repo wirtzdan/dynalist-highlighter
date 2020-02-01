@@ -32,16 +32,23 @@ function Widget() {
   useEffect(() => {
     setTitle(document.title);
 
-  const { isOpen, onOpen, onClose } = useDisclosure();
+    chrome.storage.sync.get(["key"], function(result) {
+      const { key } = result;
+
+      if (key) {
+        setWidgetState("active");
         resizeTextareaToContent();
+      } else {
+        onOpen();
+      }
+    });
+  }, []);
 
   let handleTitleChange = e => {
     let value = e.target.value;
     setTitle(value);
   };
 
-  function handleResize(e) {
-    const textarea = e.target;
   function resizeTextareaToContent() {
     const textarea = document
       .getElementById("dyn-widget")
@@ -95,6 +102,7 @@ function Widget() {
             widgetState === "setup" || widgetState === "success" ? true : false
           }
           opacity={widgetState === "setup" ? "50%" : ""}
+          onInput={resizeTextareaToContent}
           pt={0}
           fontWeight="600"
           textDecoration="underline"

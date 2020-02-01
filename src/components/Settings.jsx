@@ -34,7 +34,7 @@ import {
   useColorMode
 } from "@chakra-ui/core";
 
-function Settings({ isOpen, onClose }) {
+function Settings({ isOpen, onClose, setWidgetState }) {
   const [isAlertVisible, setIsAlertVisible] = useState(false);
   const [areDetailsVisible, setAreDetailsVisible] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -55,6 +55,7 @@ function Settings({ isOpen, onClose }) {
 
         if (key) {
           restoreOptions();
+          console.log("Test");
         }
       });
     }
@@ -79,6 +80,7 @@ function Settings({ isOpen, onClose }) {
         });
 
         loadDetails();
+        setWidgetState("active");
       } else {
         setIsAlertVisible(true);
       }
@@ -87,6 +89,9 @@ function Settings({ isOpen, onClose }) {
         .getElementById("dyn-settings")
         .contentWindow.document.getElementById("dyn-api-key").value = "";
       setAreDetailsVisible(false);
+      chrome.storage.sync.clear(() => {
+        setWidgetState("setup");
+      });
     }
   }
 
@@ -243,7 +248,6 @@ function Settings({ isOpen, onClose }) {
                           <Link
                             href="https://dynalist.io/developer"
                             isExternal
-                            color="blue.500"
                             color={primaryColor[colorMode]}
                           >
                             Developer Page
