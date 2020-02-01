@@ -39,8 +39,11 @@ function Settings({ isOpen, onClose }) {
   const [areDetailsVisible, setAreDetailsVisible] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const { colorMode, toggleColorMode } = useColorMode();
+
   const color = { light: "gray.800", dark: "white" };
   const descColor = { light: "gray.600", dark: "gray.300" };
+  const keyColor = { light: "gray.300", dark: "gray.500" };
+  const primaryColor = { light: "blue.500", dark: "blue.300" };
 
   const initialRef = React.useRef();
   const finalRef = React.useRef();
@@ -241,6 +244,7 @@ function Settings({ isOpen, onClose }) {
                             href="https://dynalist.io/developer"
                             isExternal
                             color="blue.500"
+                            color={primaryColor[colorMode]}
                           >
                             Developer Page
                           </Link>
@@ -252,7 +256,9 @@ function Settings({ isOpen, onClose }) {
                               <Icon
                                 name="key"
                                 color={
-                                  areDetailsVisible ? "gray.200" : "blue.500"
+                                  areDetailsVisible
+                                    ? keyColor[colorMode]
+                                    : primaryColor[colorMode]
                                 }
                               />
                             }
