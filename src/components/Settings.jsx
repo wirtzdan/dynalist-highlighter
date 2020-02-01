@@ -185,7 +185,7 @@ function Settings({ isOpen, onClose, setWidgetState }) {
         });
       } else if (selectid === "dyn-toposition-select") {
         chrome.storage.sync.set({
-          fileid: select.options[0].value
+          toposition: select.options[0].value
         });
       }
     }
