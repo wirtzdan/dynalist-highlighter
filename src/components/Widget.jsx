@@ -40,6 +40,7 @@ function Widget() {
         resizeTextareaToContent();
       } else {
         onOpen();
+        resizeTextareaToContent();
       }
     });
   }, []);
@@ -58,7 +59,7 @@ function Widget() {
   }
 
   async function handleClick() {
-    if (success) {
+    if (widgetState === "success") {
       window.open(url, "_blank");
     } else {
       setIsLoading(true);
@@ -120,7 +121,7 @@ function Widget() {
             id="dyn-save-button"
             isDisabled={widgetState === "setup" ? true : false}
           >
-            {success ? "Open in Dynalist" : "Save Bookmark"}
+            {widgetState === "success" ? "Open in Dynalist" : "Save Bookmark"}
           </Button>
 
           <Flex>
