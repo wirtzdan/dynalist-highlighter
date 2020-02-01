@@ -19,7 +19,7 @@ function Widget() {
   const [title, setTitle] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const { colorMode } = useColorMode();
-  const bgColor = { light: "white", dark: "gray.800" };
+  const bgColor = { light: "white", dark: "gray.900" };
   const borderColor = { light: "gray.200", dark: "gray.700" };
   const color = { light: "gray.800", dark: "white" };
 
@@ -127,7 +127,7 @@ function Widget() {
             <IconButton
               icon="settings"
               variant={widgetState === "setup" ? "solid" : "ghost"}
-              variantColor="gray"
+              variantColor={widgetState === "setup" ? "orange" : "gray"}
               size="sm"
               onClick={onOpen}
             ></IconButton>

@@ -44,6 +44,7 @@ function Settings({ isOpen, onClose, setWidgetState }) {
   const descColor = { light: "gray.600", dark: "gray.300" };
   const keyColor = { light: "gray.300", dark: "gray.500" };
   const primaryColor = { light: "blue.500", dark: "blue.300" };
+  const bgColor = { light: "white", dark: "gray.900" };
 
   const initialRef = React.useRef();
   const finalRef = React.useRef();
@@ -221,7 +222,11 @@ function Settings({ isOpen, onClose, setWidgetState }) {
               <ChakraProvider>
                 <FrameProvider>
                   <ModalOverlay opacity={styles.opacity} />
-                  <ModalContent rounded="lg" {...styles}>
+                  <ModalContent
+                    rounded="lg"
+                    bg={bgColor[colorMode]}
+                    {...styles}
+                  >
                     <ModalHeader color={color[colorMode]}>Settings</ModalHeader>
                     <ModalCloseButton
                       top="16px"
