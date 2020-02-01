@@ -345,18 +345,20 @@ function Settings({ isOpen, onClose, setWidgetState }) {
                       <Flex justify="space-between" align="center">
                         <Link
                           href="mailto:danielwirtzx@gmail.com"
-                          color="gray.300"
+                          color={keyColor[colorMode]}
                           fontSize="sm"
                           isExternal
                         >
                           Give Feedback
                         </Link>
-                        <IconButton
-                          icon={colorMode === "light" ? "sun" : "moon"}
+                        <Button
+                          leftIcon={colorMode === "light" ? "moon" : "sun"}
                           size="sm"
                           onClick={toggleColorMode}
                           variant="ghost"
-                        ></IconButton>
+                        >
+                          {colorMode === "light" ? "Dark Mode" : "Light Mode"}
+                        </Button>
                       </Flex>
                     </ModalBody>
                   </ModalContent>
