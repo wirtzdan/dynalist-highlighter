@@ -128,7 +128,7 @@ function Widget() {
             <IconButton
               icon="settings"
               variant={widgetState === "setup" ? "solid" : "ghost"}
-              variantColor={widgetState === "setup" ? "orange" : "gray"}
+              variantColor={widgetState === "setup" ? "teal" : "gray"}
               size="sm"
               onClick={onOpen}
             ></IconButton>
