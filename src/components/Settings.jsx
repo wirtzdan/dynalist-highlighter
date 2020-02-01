@@ -338,9 +338,10 @@ function Settings({ isOpen, onClose }) {
                       <Divider my={4} />
                       <Flex justify="space-between" align="center">
                         <Link
-                          to="mailto:hello@danielwirtz.com"
+                          href="mailto:hello@danielwirtz.com"
                           color="gray.300"
                           fontSize="sm"
+                          isExternal
                         >
                           Give Feedback
                         </Link>
