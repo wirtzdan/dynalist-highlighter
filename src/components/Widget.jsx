@@ -58,9 +58,10 @@ function Widget() {
     <>
       <Settings isOpen={isOpen} onClose={onClose} />
       <Box
-        w={280}
+        w={300}
         borderWidth="1px"
         rounded="lg"
+        roundedBottomRight={2}
         p="3"
         pos="fixed"
         right="3"

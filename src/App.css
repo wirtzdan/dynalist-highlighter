@@ -53,6 +53,7 @@
   right: 0;
   border: none;
   z-index: 9999;
+  width: 320px;
 }
 
 #chakra-portal-1 iframe {
