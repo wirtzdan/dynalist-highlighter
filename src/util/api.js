@@ -44,7 +44,25 @@ export async function sendToDynalist(highlights) {
     .value.trim();
   const url = document.URL;
 
-  const turndown = new TurndownService();
+  const turndown = new TurndownService({
+    emDelimiter: "__"
+  });
+
+  turndown.remove("hr");
+
+  turndown.addRule("code", {
+    filter: "pre",
+    replacement: function(content) {
+      return "```" + content + "```";
+    }
+  });
+
+  turndown.addRule("bullets", {
+    filter: "li",
+    replacement: function(content) {
+      return "" + content + "\n\n";
+    }
+  });
 
   const { key, fileid, toposition } = await new Promise((res, rej) => {
     chrome.storage.sync.get(["key", "fileid", "toposition"], result =>
