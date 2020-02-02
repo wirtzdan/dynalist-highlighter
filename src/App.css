@@ -64,7 +64,8 @@
   top: 0;
   left: 0;
   border: none;
-  z-index: 9999;
+  z-index: 999999999999999999;
+  overflow: hidden;
   position: fixed;
 }
 
