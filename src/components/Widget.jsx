@@ -15,7 +15,9 @@ import {
   useColorMode
 } from "@chakra-ui/core";
 
-function Widget() {
+function Widget({ buttonText }) {
+  console.log("TCL: Widget -> buttonText", buttonText);
+
   const [title, setTitle] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const { colorMode } = useColorMode();
@@ -120,7 +122,7 @@ function Widget() {
             id="dyn-save-button"
             isDisabled={widgetState === "setup" ? true : false}
           >
-            {widgetState === "success" ? "Open in Dynalist" : "Save Bookmark"}
+            {widgetState === "success" ? "Open in Dynalist" : buttonText}
           </Button>
 
           <Flex>
