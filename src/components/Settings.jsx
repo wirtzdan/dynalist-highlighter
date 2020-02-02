@@ -4,6 +4,7 @@ import Frame from "react-frame-component";
 import { ScopeProvider } from "../util/scope-provider";
 import { FrameProvider } from "../util/frame-provider";
 import { ChakraProvider } from "../util/chakra-provider";
+import DanielAvatar from "../daniel-avatar.jpg";
 
 import { isKeyValid, getFiles } from "../util/api";
 
@@ -32,7 +33,8 @@ import {
   Flex,
   Divider,
   useColorMode,
-  CSSReset
+  CSSReset,
+  Avatar
 } from "@chakra-ui/core";
 
 function Settings({ isOpen, onClose, setWidgetState }) {
@@ -42,7 +44,8 @@ function Settings({ isOpen, onClose, setWidgetState }) {
   const { colorMode, toggleColorMode } = useColorMode();
 
   const color = { light: "gray.800", dark: "white" };
-  const descColor = { light: "gray.600", dark: "gray.300" };
+  const descColor = { light: "gray.500", dark: "gray.400" };
+  const footerColor = { light: "gray.400", dark: "gray.600" };
   const keyColor = { light: "gray.300", dark: "gray.500" };
   const primaryColor = { light: "blue.500", dark: "blue.300" };
   const bgColor = { light: "white", dark: "gray.900" };
@@ -57,7 +60,6 @@ function Settings({ isOpen, onClose, setWidgetState }) {
 
         if (key) {
           restoreOptions();
-          console.log("Test");
         }
       });
     }
@@ -114,7 +116,6 @@ function Settings({ isOpen, onClose, setWidgetState }) {
   function loadDetails() {
     chrome.storage.sync.get(["key"], async function(result) {
       const { key } = result;
-      console.log("TCL: loadDetails -> result", result);
 
       if (key) {
         const files = await getFiles(key);
@@ -135,7 +136,6 @@ function Settings({ isOpen, onClose, setWidgetState }) {
       result
     ) {
       const { key, fileid, toposition } = result;
-      console.log("TCL: restoreOptions -> result", result);
 
       const files = await getFiles(key);
       document
@@ -171,7 +171,6 @@ function Settings({ isOpen, onClose, setWidgetState }) {
       const key = `"${value}"`;
 
       chrome.storage.sync.get(key, function(result) {
-        result ? console.log("True") : console.log("false");
         select.value = value;
       });
     } else {
@@ -343,18 +342,47 @@ function Settings({ isOpen, onClose, setWidgetState }) {
                       <Divider my={4} />
                       <Flex justify="space-between" align="center">
                         <Link
-                          href="mailto:danielwirtzx@gmail.com"
-                          color={keyColor[colorMode]}
-                          fontSize="sm"
+                          href="https://twitter.com/wirtzdan"
                           isExternal
+                          _hover={{ textDecoration: "none" }}
                         >
-                          Give Feedback
+                          <Button
+                            size="sm"
+                            variant="ghost"
+                            color={footerColor[colorMode]}
+                            fontWeight="normal"
+                          >
+                            <Avatar
+                              size="2xs"
+                              name="Daniel Wirtz"
+                              src="http://bit.ly/daniel-avatar"
+                              mr={2}
+                            />
+                            @wirtzdan
+                          </Button>
+                        </Link>
+                        <Link
+                          href="mailto:danielwirtzx@gmail.com"
+                          isExternal
+                          _hover={{ textDecoration: "none" }}
+                        >
+                          <Button
+                            leftIcon="feedback"
+                            size="sm"
+                            variant="ghost"
+                            color={footerColor[colorMode]}
+                            fontWeight="normal"
+                          >
+                            Feedback
+                          </Button>
                         </Link>
                         <Button
                           leftIcon={colorMode === "light" ? "moon" : "sun"}
                           size="sm"
                           onClick={toggleColorMode}
                           variant="ghost"
+                          color={footerColor[colorMode]}
+                          fontWeight="normal"
                         >
                           {colorMode === "light" ? "Dark Mode" : "Light Mode"}
                         </Button>
