@@ -28,6 +28,13 @@ function Widget({ buttonText }) {
 
   const { isOpen, onOpen, onClose } = useDisclosure();
 
+  const html = document
+    .getElementById("dyn-widget")
+    .contentWindow.document.getElementsByTagName("html")[0];
+  console.log("TCL: Widget -> html", html);
+
+  html.style.backgroundColor = "transparent";
+
   useEffect(() => {
     setTitle(document.title);
 
@@ -127,7 +134,7 @@ function Widget({ buttonText }) {
             <IconButton
               icon="settings"
               variant={widgetState === "setup" ? "solid" : "ghost"}
-              variantColor={widgetState === "setup" ? "teal" : "gray"}
+              variantColor={widgetState === "setup" ? "red" : "gray"}
               size="sm"
               onClick={onOpen}
             ></IconButton>

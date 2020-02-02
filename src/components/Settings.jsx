@@ -4,7 +4,7 @@ import Frame from "react-frame-component";
 import { ScopeProvider } from "../util/scope-provider";
 import { FrameProvider } from "../util/frame-provider";
 import { ChakraProvider } from "../util/chakra-provider";
-import DanielAvatar from "../daniel-avatar.jpg";
+import "../cssreset.css";
 
 import { isKeyValid, getFiles } from "../util/api";
 
@@ -209,6 +209,11 @@ function Settings({ isOpen, onClose, setWidgetState }) {
                     type="text/css"
                     rel="stylesheet"
                     href={chrome.runtime.getURL("/static/css/content.css")}
+                  ></link>
+                  <link
+                    type="text/css"
+                    rel="stylesheet"
+                    href={chrome.runtime.getURL("/static/css/cssreset.css")}
                   ></link>
                 </>
               ]}

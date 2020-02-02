@@ -3,8 +3,6 @@
 import React, { useState } from "react";
 import ReactDOM from "react-dom";
 import Widget from "./components/Widget";
-import "./content.css";
-import "./cssreset.css";
 import "./app.css";
 import Frame from "react-frame-component";
 import { ScopeProvider } from "./util/scope-provider";
@@ -68,18 +66,7 @@ function Main() {
 
   return (
     <ScopeProvider scope={"#root .App"}>
-      <Frame
-        head={[
-          <>
-            <link
-              type="text/css"
-              rel="stylesheet"
-              href={chrome.runtime.getURL("/static/css/content.css")}
-            ></link>
-          </>
-        ]}
-        id="dyn-widget"
-      >
+      <Frame head={[<></>]} id="dyn-widget">
         <ChakraProvider>
           <FrameProvider>
             <CSSReset />

@@ -1,3 +1,7 @@
+html {
+  background-color: transparent !important;
+}
+
 :root {
   --dyn-highlight: #ffec99;
   --dyn-highlight-hover: #ffe066;
@@ -67,8 +71,5 @@
   z-index: 999999999999999999;
   overflow: hidden;
   position: fixed;
-}
-
-html {
   background-color: transparent !important;
 }
