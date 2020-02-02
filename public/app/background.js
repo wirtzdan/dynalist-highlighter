@@ -31,8 +31,6 @@ function activateExtension() {
   ) {
     chrome.tabs.sendMessage(tabs[0].id, { msg: "activate" }, function(
       response
-    ) {
-      console.log(response);
-    });
+    ) {});
   });
 }

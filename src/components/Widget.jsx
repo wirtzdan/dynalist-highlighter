@@ -16,8 +16,6 @@ import {
 } from "@chakra-ui/core";
 
 function Widget({ buttonText }) {
-  console.log("TCL: Widget -> buttonText", buttonText);
-
   const [title, setTitle] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const { colorMode } = useColorMode();

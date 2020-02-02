@@ -94,8 +94,6 @@ function Main() {
 let active = false;
 
 chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
-  console.log("TCL: request", request);
-
   if (request.msg === "deactivate") {
     sendResponse("Response: Deactivate");
   } else if (request.msg === "activate" && active === false) {
