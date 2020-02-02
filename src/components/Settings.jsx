@@ -284,7 +284,6 @@ function Settings({ isOpen, onClose, setWidgetState }) {
                               variantColor={areDetailsVisible ? "gray" : "blue"}
                               size="sm"
                               onClick={handleClick}
-                              loadingText="Testing"
                               isLoading={isLoading}
                             >
                               {areDetailsVisible ? "Reset" : "Save"}
